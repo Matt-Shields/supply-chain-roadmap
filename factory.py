@@ -12,7 +12,7 @@ class Factory():
     """ Define factory class """
     def __init__(self, filepath, component, years, generic, facility=None):
         self.read_attributes(filepath, component, generic, facility)
-        self.define_throughput_schedule(years)
+        self.define_schedule(years)
         self.outputs = {}
 
     def read_attributes(self, filepath, component, generic, facility):
@@ -35,8 +35,10 @@ class Factory():
             COD = facility[0]
         return COD
 
-    def define_throughput_schedule(self, years):
+    def define_schedule(self, years):
         """Define throughput per year"""
         _ind = np.where(years == self.COD)[0]
         self.annual_throughput = np.zeros(len(years))
         self.annual_throughput[_ind[0]:] = self.throughput
+        self.annual_investment = np.zeros(len(years))
+        self.annual_investment[_ind[0]:] = self.investment

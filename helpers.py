@@ -19,12 +19,21 @@ tier23_scaling = {'Flange': ['Tower', 1],
     'Gearbox': ['Nacelle', 0.33],  # 1/3 market share (Vestas only)
     'Mooring chain': ['Semisubmersibles', 3*moor_chain],
     'Mooring rope': ['Semisubmersibles', 3*moor_rope],
-    'Anchors': ['Semisubmersibles', 3],
-    'Suction caissons': ['Semisubmersibles', 3],
-    'Bearings': ['Nacelle', 4],  # yaw, 3xpitch,
-    'Hubs': ['Nacelle', 1],
-    'Bedplates': ['Nacelle', 1],
-    'Steel plates': ['Monopile', 45]
+    'Anchor': ['Semisubmersibles', 3],
+    'Suction caisson': ['Semisubmersibles', 3],
+    'Bearing': ['Nacelle', 4],  # yaw, 3xpitch,
+    'Hub': ['Nacelle', 1],
+    'Bedplate': ['Nacelle', 1],
+    'Steel plate': ['Monopile', 45]
+}
+
+color_list = {'Monopile': '#282D30',
+    'Blade': '#00FFFF',
+    'Nacelle': '#7FFFD4',
+    'Tower': '#008000',
+    'Transition piece': '#D2691E' ,
+    'Array cable': '#FFA500',
+    'Export cable': '#FF4500',
 }
 
 def read_future_scenarios(file, sheet):
@@ -66,6 +75,7 @@ def sum_property(years, factory_list, property):
     """Sum factory properties for Factory objects in a list"""
     _total = [0] * len(years)
     for f in factory_list:
+        # print(_total, getattr(f,property))
         _total = np.array([sum(x) for x in zip(_total, getattr(f, property))])
     return _total
 
