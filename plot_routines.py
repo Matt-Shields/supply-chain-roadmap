@@ -119,21 +119,21 @@ def initFigAxis():
     ax = fig.add_subplot(111)
     return fig, ax
 
-def plot_supply_demand(x, y_zip, ylabel, y2=None, fname=None, plot_average=None):
+def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, fname=None, plot_average=None):
     fig, ax = initFigAxis()
     y_total = np.zeros(len(x))
-    for y, c, n in y_zip:
-        ax.bar(x, y, color=c, edgecolor='k', label=n, bottom=y_total)
+    for y, c, n, h in y_zip:
+        ax.bar(x, y, color=color_list[component], edgecolor='k', hatch=h, label=n, bottom=y_total)
         y_total += y
     if y2 is not None:
-        ax.plot(x, y2, 'k', label='Annual demand', alpha=0.5)
+        ax.plot(x, y2, 'r', label='Annual demand', alpha=0.5)
         if plot_average is not None:
             _ind_i = np.where(x == plot_average[0])[0][0]
             _ind_f = np.where(x == plot_average[1])[0][0]
             x_average = x[_ind_i:_ind_f+1]
             y_average = np.ones(len(x_average)) * np.mean(y2[_ind_i:_ind_f+1])
             label_avg = 'Average demand between ' + str(x[_ind_i]) + ' and ' + str(x[_ind_f])
-            ax.plot(x_average, y_average, c='k', linestyle='--', label=label_avg)
+            ax.plot(x_average, y_average, c='r', linestyle='--', label=label_avg)
     # else:
     #     # ax.plot(x, y2, 'k', label='Total demand')
     ax.set_xticks(x)
@@ -141,6 +141,8 @@ def plot_supply_demand(x, y_zip, ylabel, y2=None, fname=None, plot_average=None)
     ax.set_xlabel('Manufacturing date')
 
     ax.set_ylabel(ylabel)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax.legend(loc='upper left')
 
@@ -149,9 +151,9 @@ def plot_supply_demand(x, y_zip, ylabel, y2=None, fname=None, plot_average=None)
         mysave(fig, fname)
         plt.close()
 
-def plot_diff(x, y, ylabel, fname):
+def plot_diff(x, y, ylabel, color, fname):
     fig, ax = initFigAxis()
-    ax.bar(x, y)
+    ax.bar(x, y, color=color, alpha=0.5)
 
     ax.set_xticks(x)
     ax.set_xticklabels(ax.get_xticks(), rotation=45)
@@ -172,42 +174,30 @@ def plot_investment(x, y1, y2, components, color_list, fname=None):
 
     yBase = np.zeros(len(x))
     for c in components:
-        # yPlot = yBase + y
-        # Plot announced
-        yPlot = yBase + y1[c]
+        yPlot = yBase + y1[c] + y2[c]
         ax.plot(x, yPlot, 'k')
-        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], alpha=0.5, label=c)
-        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], edgecolor='k', hatch='+', alpha=0.5, zorder=2)
-        # Plot scenario
-        yPlot_scenario = yPlot + y2[c]
-        ax.plot(x, yPlot_scenario, 'k')
-        ax.fill_between(x, list(yPlot), list(yPlot_scenario), color=color_list[c], edgecolor='k', hatch='\\', alpha=0.5)
+        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
 
-        yBase = yPlot_scenario
+        yBase = yPlot
 
-    # Add legend entry for hatching
-    handles, labels = ax.get_legend_handles_labels()
-    patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch='+', label='Announced facilities')
-    patch2 = mpatches.Patch(facecolor='white',
+    ax.set_xlabel('Manufacturing date')
+    ax.set_ylabel('Investment, $ million')
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
-    edgecolor='k', hatch='\\', label='Scenario facilities')
-
-    handles.append(patch1)
-    handles.append(patch2)
-
-    ax.legend(handles=handles, loc='upper left')
+    ax.legend(loc='upper left')
 
     if fname is not None:
         myformat(ax)
         mysave(fig, fname)
         plt.close()
 
-def plot_num_facilities(components, y1, y2, fname=None):
+def plot_num_facilities(components, y1, y2, color_list, fname=None):
     """Plot the total number of required facilities per component"""
 
     announced = {}
     scenario = {}
-
+    bar_color = []
 
     for c in components:
         count1 = 0
@@ -221,21 +211,23 @@ def plot_num_facilities(components, y1, y2, fname=None):
         announced[c] = count1
         scenario[c] = count2
 
+        bar_color.append(color_list[c])
+
     fig, ax = initFigAxis()
     announced_vals = list(announced.values())
     scenario_vals = list(scenario.values())
 
-    ax.bar(components, announced_vals, color='r', label='Announced')
-    ax.bar(components, scenario_vals, color='b', bottom=announced_vals, label='Scenario')
+    ax.bar(components, announced_vals, color=bar_color, hatch=color_list['Announced_hatch'])
+    ax.bar(components, scenario_vals, color=bar_color,  hatch=color_list['Scenario_hatch'], bottom=announced_vals)
 
-    # ax.set_xticks(components)
-    # ax.set_xticklabels(ax.get_xticks(), rotation=45)
     ax.set_xticklabels(components, rotation=45)
-    ax.set_xlabel('Component')
-
     ax.set_ylabel('Number of facilities')
 
-    ax.legend(loc='upper left')
+    patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
+    patch2 = mpatches.Patch(facecolor='white',  edgecolor='k', hatch=color_list['Scenario_hatch'], label='Additional required facilities')
+    handles = [patch1, patch2]
+
+    ax.legend(handles=handles, loc='upper left')
 
     if fname is not None:
         myformat(ax)

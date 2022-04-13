@@ -27,13 +27,18 @@ tier23_scaling = {'Flange': ['Tower', 1],
     'Steel plate': ['Monopile', 45]
 }
 
-color_list = {'Monopile': '#282D30',
-    'Blade': '#00FFFF',
-    'Nacelle': '#7FFFD4',
-    'Tower': '#008000',
-    'Transition piece': '#D2691E' ,
-    'Array cable': '#FFA500',
-    'Export cable': '#FF4500',
+color_list = {'Monopile': '#303CAA',
+    'Blade': '#F6A92A',
+    'Nacelle': '#FFCE7C',
+    'Tower': '#A56700',
+    'Transition piece': '#717ACC' ,
+    'Array cable': '#504CC9',
+    'Export cable': '#1A14A5',
+    'Announced': '#ECB400',
+    'Scenario': '#B78B00',
+    'WTIV': '#688CD3',
+    'Announced_hatch': '\\',
+    'Scenario_hatch': '.'
 }
 
 def read_future_scenarios(file, sheet):

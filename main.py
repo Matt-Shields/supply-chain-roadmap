@@ -16,7 +16,7 @@ filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Monopile', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable']
+components = ['Monopile', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable', 'WTIV']
 
 if __name__ == "__main__":
     # Demand
@@ -32,7 +32,9 @@ if __name__ == "__main__":
         'Smulders - Transition piece',
         'Nexans - Export cable',
         'Prysmian - Export cable',
-        'Hellenic - Array cable'
+        'Hellenic - Array cable',
+        'Keppel AmFELS - WTIV',
+        'Sembcorp - WTIV'
     ]
     # Scenarios
     indiv_scenario = read_future_scenarios(filepath_scenarios, 'Avg Demand Scenario')
@@ -74,27 +76,35 @@ if __name__ == "__main__":
         # Compare with demand
         fname = 'results/'+ c + '_supply_demand'
         y_throughput = [total_announced_throughput[c], total_scenario_throughput[c] ]
-        color_throughput = ['r', 'b', 'k']
-        name_throughput = ['Announced','Scenario','Annual demand']
-        ylabel = 'Throughput (' + c + '/year)'
-        plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput), ylabel, y2=total_demand[c], fname=fname, plot_average=[2023,2033])
+        color_throughput = [color_list['Announced'], color_list['Scenario'], 'k']
+        name_throughput = ['Announced','Additional required','Annual demand']
+        hatch_throughput = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
+        if c == 'WTIV':
+            ylabel = 'Cumulative wind turbine installation vessels'
+            _plot_average = None
+        else:
+            ylabel = 'Throughput (' + c + '/year)'
+            _plot_average = [2023,2033]
+
+        plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], fname=fname, plot_average=_plot_average)
         #
         # Plot difference between supply and demand
         # TODO: Figure cleanup, different bars colors
         fname_diff = 'results/' + c + 'diff'
         y_diff = total_announced_throughput[c] + total_scenario_throughput[c] - total_demand[c]
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
-        plot_diff(years, y_diff, ylabel_diff, fname_diff)
+        plot_diff(years, y_diff, ylabel_diff, color_list[c], fname_diff)
         #
         # Plot investment
         fname = 'results/'+ c + '_investment'
         y_investment = [total_announced_investment[c], total_scenario_investment[c] ]
-        color_investment = ['r', 'b']
-        name_investment = ['Announced','Scenario']
+        color_investment = [color_list['Announced'], color_list['Scenario']]
+        name_investment = ['Announced','Additional required']
+        hatch_throughput = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
         ylabel = 'Cumulative investment ($ million)'
-        plot_supply_demand(years, zip(y_throughput, color_investment, name_investment), ylabel, fname=fname)
+        plot_supply_demand(years, zip(y_throughput, color_investment, name_investment, hatch_throughput), color_list, c, ylabel, fname=fname)
         #
 
 plot_investment(years, total_announced_investment, total_scenario_investment, components, color_list, fname='results/total_investment')
 
-plot_num_facilities(components, indiv_announced, indiv_scenario, fname='results/num_facilities')
+plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
