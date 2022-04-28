@@ -42,3 +42,5 @@ class Factory():
         self.annual_throughput[_ind[0]:] = self.throughput
         self.annual_investment = np.zeros(len(years))
         self.annual_investment[_ind[0]:] = self.investment
+        self.annual_jobs = np.zeros(len(years))
+        self.annual_jobs[_ind[0]:] = self.total_jobs

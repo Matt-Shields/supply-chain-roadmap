@@ -8,15 +8,15 @@ __email__ = "matt.shields@nrel.gov"
 import numpy as np
 import pandas as pd
 
-from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list
-from plot_routines import plot_supply_demand, plot_diff, plot_investment, plot_num_facilities
+from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown
+from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities
 
 # Input paramters
 filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Monopile', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable', 'WTIV']
+components = ['Monopile', 'Jacket', 'Semisubmersible', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable']
 
 if __name__ == "__main__":
     # Demand
@@ -49,7 +49,8 @@ if __name__ == "__main__":
     total_scenario_throughput = {}
     total_announced_investment = {}
     total_scenario_investment = {}
-
+    total_announced_jobs = {}
+    total_scenario_jobs = {}
     # Instantiate individual factories for all components in t
     for c in components:
         # Known facilities
@@ -70,6 +71,8 @@ if __name__ == "__main__":
         total_scenario_throughput[c] = sum_property(years, scenario[c], 'annual_throughput')
         total_announced_investment[c] = sum_property(years, announced[c], 'annual_investment')
         total_scenario_investment[c] = sum_property(years, scenario[c], 'annual_investment')
+        total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
+        total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
 
         # print(total_scenario_investment)
 
@@ -82,9 +85,11 @@ if __name__ == "__main__":
         if c == 'WTIV':
             ylabel = 'Cumulative wind turbine installation vessels'
             _plot_average = None
+        elif c == 'Semisubmersible':
+            _plot_average = [2026,2033]
         else:
             ylabel = 'Throughput (' + c + '/year)'
-            _plot_average = [2023,2033]
+            _plot_average = [2026,2033]
 
         plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], fname=fname, plot_average=_plot_average)
         #
@@ -100,11 +105,23 @@ if __name__ == "__main__":
         y_investment = [total_announced_investment[c], total_scenario_investment[c] ]
         color_investment = [color_list['Announced'], color_list['Scenario']]
         name_investment = ['Announced','Additional required']
-        hatch_throughput = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
+        hatch_investment = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
         ylabel = 'Cumulative investment ($ million)'
-        plot_supply_demand(years, zip(y_throughput, color_investment, name_investment, hatch_throughput), color_list, c, ylabel, fname=fname)
+        plot_supply_demand(years, zip(y_throughput, color_investment, name_investment, hatch_investment), color_list, c, ylabel, fname=fname)
         #
+        # Plot jobs
+        fname = 'results/'+ c + '_jobs'
+        y_jobs = [total_announced_jobs[c], total_scenario_jobs[c] ]
+        color_jobs = [color_list['Announced'], color_list['Scenario']]
+        name_jobs = ['Announced','Additional required']
+        hatch_jobs = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
+        ylabel = 'Cumulative jobs, FTEs'
+        plot_supply_demand(years, zip(y_jobs, color_jobs, name_jobs, hatch_jobs), color_list, c, ylabel, fname=fname)
 
-plot_investment(years, total_announced_investment, total_scenario_investment, components, color_list, fname='results/total_investment')
+plot_cumulative(years, total_announced_investment, total_scenario_investment, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
+
+plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
 
 plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
+
+# plot_job_breakdown()

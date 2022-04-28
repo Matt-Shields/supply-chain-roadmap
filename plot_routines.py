@@ -153,7 +153,7 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, fname=N
 
 def plot_diff(x, y, ylabel, color, fname):
     fig, ax = initFigAxis()
-    ax.bar(x, y, color=color, alpha=0.5)
+    ax.bar(x, y, color=color)
 
     ax.set_xticks(x)
     ax.set_xticklabels(ax.get_xticks(), rotation=45)
@@ -168,8 +168,8 @@ def plot_diff(x, y, ylabel, color, fname):
         mysave(fig, fname)
         plt.close()
 
-def plot_investment(x, y1, y2, components, color_list, fname=None):
-    """ PLot the cumulative investment in the overall supply chain"""
+def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):
+    """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
 
     yBase = np.zeros(len(x))
@@ -177,20 +177,46 @@ def plot_investment(x, y1, y2, components, color_list, fname=None):
         yPlot = yBase + y1[c] + y2[c]
         ax.plot(x, yPlot, 'k')
         ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
-
         yBase = yPlot
 
     ax.set_xlabel('Manufacturing date')
-    ax.set_ylabel('Investment, $ million')
+    ax.set_ylabel(ylabel)
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
-    ax.legend(loc='upper left')
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], loc='upper left')
+    # ax.legend(loc='upper left')
 
     if fname is not None:
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+    if alternate_breakdown is not None:
+        fig_alt, ax_alt = initFigAxis()
+
+        yBase_total = yBase
+        yBase_alt = np.zeros(len(x))
+        for k, v in alternate_breakdown.items():
+            yPlot_alt = yBase_alt + v * yBase_total
+            ax_alt.plot(x, yPlot_alt, 'k')
+            ax_alt.fill_between(x, list(yBase_alt), list(yPlot_alt), color=color_list[k], label=k)
+            yBase_alt = yPlot_alt
+
+        ax_alt.set_xlabel('Manufacturing date')
+        ax_alt.set_ylabel(ylabel)
+        ax_alt.get_yaxis().set_major_formatter(
+            mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+        ax_alt.legend(loc='upper left')
+
+        if fname is not None:
+            myformat(ax_alt)
+            mysave(fig_alt, fname+'_alt')
+            plt.close()
+
+
 
 def plot_num_facilities(components, y1, y2, color_list, fname=None):
     """Plot the total number of required facilities per component"""
@@ -220,7 +246,7 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     ax.bar(components, announced_vals, color=bar_color, hatch=color_list['Announced_hatch'])
     ax.bar(components, scenario_vals, color=bar_color,  hatch=color_list['Scenario_hatch'], bottom=announced_vals)
 
-    ax.set_xticklabels(components, rotation=45)
+    ax.set_xticklabels(components, rotation=90)
     ax.set_ylabel('Number of facilities')
 
     patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
@@ -233,3 +259,25 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+# def plot_job_breakdown(x, y1, y2, components, color_list, ylabel, fname=None):
+#     """ PLot the cumulative investment or jobs in the overall supply chain"""
+#     fig, ax = initFigAxis()
+#
+#     yBase = np.zeros(len(x))
+#     for c in components:
+#         yTotal = yBase + y1[c] + y2[c]
+#         yBase = yPlot
+#
+#     # Define breakdown into job categories
+#     ax.set_xlabel('Manufacturing date')
+#     ax.set_ylabel(ylabel)
+#     ax.get_yaxis().set_major_formatter(
+#         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+#
+#     ax.legend(loc='upper left')
+#
+#     if fname is not None:
+#         myformat(ax)
+#         mysave(fig, fname)
+#         plt.close()
