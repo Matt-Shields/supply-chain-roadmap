@@ -8,7 +8,7 @@ __email__ = "matt.shields@nrel.gov"
 import numpy as np
 import pandas as pd
 
-from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown
+from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots
 from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities
 
 # Input paramters
@@ -16,7 +16,7 @@ filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Monopile', 'Jacket', 'Semisubmersible', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable']
+components = ['Monopile', 'Jacket', 'Semisubmersible', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate']
 
 if __name__ == "__main__":
     # Demand
@@ -34,7 +34,8 @@ if __name__ == "__main__":
         'Prysmian - Export cable',
         'Hellenic - Array cable',
         'Keppel AmFELS - WTIV',
-        'Sembcorp - WTIV'
+        'Sembcorp - WTIV',
+        'Nucor - Steel plate'
     ]
     # Scenarios
     indiv_scenario = read_future_scenarios(filepath_scenarios, 'Avg Demand Scenario')
@@ -91,12 +92,16 @@ if __name__ == "__main__":
             ylabel = 'Throughput (' + c + '/year)'
             _plot_average = [2026,2033]
 
-        plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], fname=fname, plot_average=_plot_average)
+        plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], ylim=ymax_plots[c], fname=fname, plot_average=_plot_average)
         #
         # Plot difference between supply and demand
-        # TODO: Figure cleanup, different bars colors
         fname_diff = 'results/' + c + 'diff'
-        y_diff = total_announced_throughput[c] + total_scenario_throughput[c] - total_demand[c]
+        try:
+            y_diff = total_announced_throughput[c] + total_scenario_throughput[c] - total_demand[c]
+        except ValueError:
+            # No announced facilities
+            y_diff = total_scenario_throughput[c] - total_demand[c]
+
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
         plot_diff(years, y_diff, ylabel_diff, color_list[c], fname_diff)
         #

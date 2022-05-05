@@ -24,7 +24,7 @@ tier23_scaling = {'Flange': ['Tower', 1],
     'Bearing': ['Nacelle', 4],  # yaw, 3xpitch,
     'Hub': ['Nacelle', 1],
     'Bedplate': ['Nacelle', 1],
-    'Steel plate': ['Monopile', 45]
+    'Steel plate': [['Monopile', 2500], ['Tower', 900]]
 }
 
 job_breakdown = {'Design and engineering': .03,
@@ -32,6 +32,19 @@ job_breakdown = {'Design and engineering': .03,
     'Factory-level management': .12,
     'Factory-level worker': .65,
     'Facilities maintenance': .15
+}
+
+ymax_plots = {'Monopile': 350,
+    'Jacket': 120,
+    'Semisubmersible': 300,
+    'Blade': 1600,
+    'Nacelle': 800,
+    'Tower': 600,
+    'Transition piece': 350 ,
+    'Array cable': 3500,
+    'Export cable': 1800,
+    'WTIV': 6,
+    'Steel plate': 1000000
 }
 
 color_list = {'Monopile': '#303CAA',
@@ -46,6 +59,7 @@ color_list = {'Monopile': '#303CAA',
     'Announced': '#ECB400',
     'Scenario': '#B78B00',
     'WTIV': '#688CD3',
+    'Steel plate': 'b',
     # Color scheme for jobs: Hue 93, RBG 736C47, Dist 160
     'Design and engineering': '#9F976A',
     'Quality and safety': '#4B4315',
@@ -53,8 +67,8 @@ color_list = {'Monopile': '#303CAA',
     'Factory-level worker': '#301E3F',
     'Facilities maintenance': '#6E6F8B',
     #
-    'Announced_hatch': '\\',
-    'Scenario_hatch': '.'
+    'Announced_hatch': '\\\\',
+    'Scenario_hatch': '..'
 }
 
 def read_future_scenarios(file, sheet):
@@ -76,7 +90,14 @@ def read_pipeline(file):
     for col, vals in df.items():
         dict[col] = vals
     for t, scale in tier23_scaling.items():
-        dict[t] = dict[scale[0]] * scale[1]
+        try:
+            dict[t] = dict[scale[0]] * scale[1]
+        except TypeError:
+            # List of multiple components
+            _amt = 0
+            for s in scale:
+                _amt += dict[s[0]] * s[1]
+            dict[t] = _amt
     return dict, manf_date
 
 

@@ -37,14 +37,14 @@ tickLabelSize = 18  # 30 #28
 legendSize = tickLabelSize + 2
 textSize = legendSize - 2
 deltaShow = 4
-linewidth = 4
+linewidth = 3
 
 
-def myformat(ax, mode='save'):
+def myformat(ax, linewidth=linewidth, mode='save'):
     assert type(mode) == type('')
     assert mode.lower() in ['save', 'show'], 'Unknown mode'
 
-    def myformat(myax):
+    def myformat(myax, linewidth=linewidth):
         if mode.lower() == 'show':
             for i in myax.get_children():  # Gets EVERYTHING!
                 if isinstance(i, txt.Text):
@@ -119,7 +119,7 @@ def initFigAxis():
     ax = fig.add_subplot(111)
     return fig, ax
 
-def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, fname=None, plot_average=None):
+def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=None, fname=None, plot_average=None):
     fig, ax = initFigAxis()
     y_total = np.zeros(len(x))
     for y, c, n, h in y_zip:
@@ -140,6 +140,8 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, fname=N
     ax.set_xticklabels(ax.get_xticks(), rotation=45)
     ax.set_xlabel('Manufacturing date')
 
+    if ylim is not None:
+        ax.set_ylim([0, ylim])
     ax.set_ylabel(ylabel)
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
@@ -189,7 +191,7 @@ def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alter
     # ax.legend(loc='upper left')
 
     if fname is not None:
-        myformat(ax)
+        myformat(ax, linewidth=2)
         mysave(fig, fname)
         plt.close()
 
@@ -209,7 +211,8 @@ def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alter
         ax_alt.get_yaxis().set_major_formatter(
             mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
-        ax_alt.legend(loc='upper left')
+        handles, labels = ax_alt.get_legend_handles_labels()
+        ax_alt.legend(handles[::-1], labels[::-1], loc='upper left')
 
         if fname is not None:
             myformat(ax_alt)
@@ -246,7 +249,7 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     ax.bar(components, announced_vals, color=bar_color, hatch=color_list['Announced_hatch'])
     ax.bar(components, scenario_vals, color=bar_color,  hatch=color_list['Scenario_hatch'], bottom=announced_vals)
 
-    ax.set_xticklabels(components, rotation=90)
+    ax.set_xticklabels(components, rotation=45)
     ax.set_ylabel('Number of facilities')
 
     patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
