@@ -74,8 +74,10 @@ color_list = {
     'WTIV': '#B08300',
     'Steel plate': '#FFBE00',
     # Color schem for announced/scneario:
-    'Announced': '#2D0EB8',
-    'Scenario': '#FFCE00',
+    'Announced': '#5D63AA',
+    'Scenario': '#2F8B6F',
+    'Deficit': '#801515',
+    'Surplus': '#0D1303',
     # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159
     'Design and engineering': '#29086B',
     'Quality and safety': '#8D76B9',

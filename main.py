@@ -103,7 +103,7 @@ if __name__ == "__main__":
             y_diff = total_scenario_throughput[c] - total_demand[c]
 
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
-        plot_diff(years, y_diff, ylabel_diff, color_list[c], fname_diff)
+        plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
         #
         # Plot investment
         fname = 'results/'+ c + '_investment'

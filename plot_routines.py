@@ -124,18 +124,23 @@ def initFigAxis():
 def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=None, fname=None, plot_average=None):
     fig, ax = initFigAxis()
     y_total = np.zeros(len(x))
+    color=color_list['Announced']
+
     for y, c, n, h in y_zip:
-        ax.bar(x, y, color=color_list[component], edgecolor='k', hatch=h, label=n, bottom=y_total)
+        ax.bar(x, y, color=color, edgecolor='k',  label=n, bottom=y_total)
         y_total += y
+        color=color_list['Scenario']
+
+    line = 'k'
     if y2 is not None:
-        ax.plot(x, y2, 'r', label='Annual demand', alpha=0.5)
+        ax.plot(x, y2, line, label='Annual demand')
         if plot_average is not None:
             _ind_i = np.where(x == plot_average[0])[0][0]
             _ind_f = np.where(x == plot_average[1])[0][0]
             x_average = x[_ind_i:_ind_f+1]
             y_average = np.ones(len(x_average)) * np.mean(y2[_ind_i:_ind_f+1])
             label_avg = 'Average demand between ' + str(x[_ind_i]) + ' and ' + str(x[_ind_f])
-            ax.plot(x_average, y_average, c='r', linestyle='--', label=label_avg)
+            ax.plot(x_average, y_average, c=line, linestyle='--', label=label_avg)
     # else:
     #     # ax.plot(x, y2, 'k', label='Total demand')
     ax.set_xticks(x)
@@ -157,7 +162,12 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=No
 
 def plot_diff(x, y, ylabel, color, fname):
     fig, ax = initFigAxis()
-    ax.bar(x, y, color=color)
+    # Separate into positive and negative
+    yneg = [i if i<0 else 0 for i in y]
+    ypos = [i if i>0 else 0 for i in y]
+
+    ax.bar(x, yneg, color=color['Deficit'], edgecolor='k', label='Production defict')
+    ax.bar(x, ypos, color=color['Surplus'], edgecolor='k', label='Production surplus')
 
     ax.set_xticks(x)
     ax.set_xticklabels(ax.get_xticks(), rotation=45)
@@ -165,7 +175,7 @@ def plot_diff(x, y, ylabel, color, fname):
 
     ax.set_ylabel(ylabel)
 
-    # ax.legend(loc='upper left')
+    ax.legend(loc='upper left')
 
     if fname is not None:
         myformat(ax)
@@ -242,25 +252,25 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
         announced[c] = count1
         scenario[c] = count2
 
-        bar_color.append(color_list[c])
+        # bar_color.append(color_list[c])
 
     fig, ax = initFigAxis()
     announced_vals = list(announced.values())
     scenario_vals = list(scenario.values())
 
-    ax.bar(components, announced_vals, color=bar_color, hatch=color_list['Announced_hatch'])
-    ax.bar(components, scenario_vals, color=bar_color,  hatch=color_list['Scenario_hatch'], bottom=announced_vals)
+    ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='k', label='Announced')
+    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', bottom=announced_vals, label='Scenario')
 
     xlabels = [label_map[c] for c in components]
-    print(xlabels)
+
     ax.set_xticklabels(components, rotation=90)
     ax.set_ylabel('Number of facilities')
 
-    patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
-    patch2 = mpatches.Patch(facecolor='white',  edgecolor='k', hatch=color_list['Scenario_hatch'], label='Additional required facilities')
-    handles = [patch1, patch2]
+    # patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
+    # patch2 = mpatches.Patch(facecolor='white',  edgecolor='k', hatch=color_list['Scenario_hatch'], label='Additional required facilities')
+    # handles = [patch1, patch2]
 
-    ax.legend(handles=handles, loc='upper left')
+    ax.legend(loc='upper left')
 
     if fname is not None:
         myformat(ax)
