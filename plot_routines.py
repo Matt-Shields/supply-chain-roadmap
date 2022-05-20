@@ -8,6 +8,8 @@ import matplotlib.text as txt
 import matplotlib.patches as mpatches
 import os
 
+from helpers import label_map
+
 
 def mysave(fig, froot, mode='png'):
     assert mode in ['png', 'eps', 'pdf', 'all']
@@ -249,7 +251,9 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     ax.bar(components, announced_vals, color=bar_color, hatch=color_list['Announced_hatch'])
     ax.bar(components, scenario_vals, color=bar_color,  hatch=color_list['Scenario_hatch'], bottom=announced_vals)
 
-    ax.set_xticklabels(components, rotation=45)
+    xlabels = [label_map[c] for c in components]
+    print(xlabels)
+    ax.set_xticklabels(components, rotation=90)
     ax.set_ylabel('Number of facilities')
 
     patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')

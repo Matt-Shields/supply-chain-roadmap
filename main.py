@@ -8,7 +8,7 @@ __email__ = "matt.shields@nrel.gov"
 import numpy as np
 import pandas as pd
 
-from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots
+from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map
 from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities
 
 # Input paramters
@@ -16,7 +16,7 @@ filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Monopile', 'Jacket', 'Semisubmersible', 'Blade', 'Nacelle', 'Tower', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate']
+components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'Transition piece', 'Semisubmersible',  'Array cable', 'Export cable', 'WTIV', 'Steel plate']
 
 if __name__ == "__main__":
     # Demand

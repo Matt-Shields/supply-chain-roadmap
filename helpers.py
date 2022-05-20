@@ -47,19 +47,35 @@ ymax_plots = {'Monopile': 350,
     'Steel plate': 1000000
 }
 
-color_list = {'Monopile': '#303CAA',
-    'Jacket': '#717ACC',
-    'Semisubmersible': '#0F1872',
-    'Blade': '#F6A92A',
-    'Nacelle': '#FFCE7C',
-    'Tower': '#A56700',
-    'Transition piece': '#717ACC' ,
-    'Array cable': '#1B9D84',
-    'Export cable': '#5FC3B0',
-    'Announced': '#ECB400',
-    'Scenario': '#B78B00',
-    'WTIV': '#688CD3',
-    'Steel plate': 'b',
+color_list = {
+    # 'Monopile': '#303CAA',
+    # 'Jacket': '#717ACC',
+    # 'Semisubmersible': '#0F1872',
+    # 'Blade': '#F6A92A',
+    # 'Nacelle': '#FFCE7C',
+    # 'Tower': '#A56700',
+    # 'Transition piece': '#717ACC' ,
+    # 'Array cable': '#1B9D84',
+    # 'Export cable': '#5FC3B0',
+    # 'Announced': '#ECB400',
+    # 'Scenario': '#B78B00',
+    # 'WTIV': '#688CD3',
+    # 'Steel plate': 'b',
+    # Color scheme for components: https://paletton.com/#uid=70m0P1kuovZh9G7nlz8xWp1E7j0kHlz6lxHTsYGtJjpEN5j5kLGs1q7F9IcGrO+m8T6fxkmuEKatTJhdM3rQzhvZqJ
+    'Monopile': '#FF670D',
+    'Jacket': '#C74A00',
+    'Semisubmersible': '#FF8518',
+    'Blade': '#698FE8',
+    'Nacelle': '#7679DB',
+    'Tower': '#ABADED',
+    'Transition piece': '#FFA976' ,
+    'Array cable': '#008564',
+    'Export cable': '#00AE83',
+    'WTIV': '#B08300',
+    'Steel plate': '#FFBE00',
+    # Color schem for announced/scneario:
+    'Announced': '#2D0EB8',
+    'Scenario': '#FFCE00',
     # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159
     'Design and engineering': '#29086B',
     'Quality and safety': '#8D76B9',
@@ -68,7 +84,21 @@ color_list = {'Monopile': '#303CAA',
     'Facilities maintenance': '#9C7700',
     #
     'Announced_hatch': '\\\\',
-    'Scenario_hatch': '..'
+    'Scenario_hatch': '...'
+}
+
+label_map = {'Monopile': 'Monopile',
+            'Jacket': 'Jacket',
+            'Semisubmersible': 'Semisub-\nmersible',
+            'Blade': 'Blade',
+            'Nacelle': 'Nacelle',
+            'Tower': 'Tower',
+            'Transition piece': 'Transition \npiece',
+            'Array cable': 'Array \ncable',
+            'Export cable': 'Export \ncable',
+            'WTIV': 'WTIV',
+            'Steel plate': 'Steel \nplate'
+
 }
 
 def read_future_scenarios(file, sheet):
