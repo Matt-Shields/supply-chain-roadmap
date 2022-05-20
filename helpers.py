@@ -60,12 +60,12 @@ color_list = {'Monopile': '#303CAA',
     'Scenario': '#B78B00',
     'WTIV': '#688CD3',
     'Steel plate': 'b',
-    # Color scheme for jobs: Hue 93, RBG 736C47, Dist 160
-    'Design and engineering': '#9F976A',
-    'Quality and safety': '#4B4315',
-    'Factory-level management': '#5C4A6B',
-    'Factory-level worker': '#301E3F',
-    'Facilities maintenance': '#6E6F8B',
+    # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159
+    'Design and engineering': '#29086B',
+    'Quality and safety': '#8D76B9',
+    'Factory-level management': '#E3B521',
+    'Factory-level worker': '#FFE699',
+    'Facilities maintenance': '#9C7700',
     #
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '..'

@@ -263,6 +263,25 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
         mysave(fig, fname)
         plt.close()
 
+def stacked_bar_2ser(x, y1, y2, c1, c2, n1, n2, ylabel, fname=None, ymax=None):
+    """ Simple stacked bar chart for 2 series"""
+    fig, ax = initFigAxis()
+    ax.bar(x, y1, color=c1, edgecolor='k', label=n1)
+    ax.bar(x, y2, color=c2, edgecolor='k', label=n2, bottom=y1)
+
+    if ymax is not None:
+        ax.set_ylim([0, ymax])
+
+    ax.set_xticklabels(x, rotation=45)
+    ax.set_ylabel(ylabel)
+
+    ax.legend(loc='upper left', bbox_to_anchor=(1.01, 1))
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
 # def plot_job_breakdown(x, y1, y2, components, color_list, ylabel, fname=None):
 #     """ PLot the cumulative investment or jobs in the overall supply chain"""
 #     fig, ax = initFigAxis()
