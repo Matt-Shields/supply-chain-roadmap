@@ -77,7 +77,7 @@ color_list = {
     'Announced': '#5D63AA',
     'Scenario': '#2F8B6F',
     'Deficit': '#801515',
-    'Surplus': '#0D1303',
+    'Surplus': 'k',
     # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159
     'Design and engineering': '#29086B',
     'Quality and safety': '#8D76B9',

@@ -166,8 +166,8 @@ def plot_diff(x, y, ylabel, color, fname):
     yneg = [i if i<0 else 0 for i in y]
     ypos = [i if i>0 else 0 for i in y]
 
-    ax.bar(x, yneg, color=color['Deficit'], edgecolor='k', label='Production defict')
-    ax.bar(x, ypos, color=color['Surplus'], edgecolor='k', label='Production surplus')
+    ax.bar(x, yneg, color=color['Deficit'], edgecolor='k', label='Production deficit')
+    ax.bar(x, ypos, color=color['Surplus'], edgecolor='k', alpha=0.75, label='Production surplus')
 
     ax.set_xticks(x)
     ax.set_xticklabels(ax.get_xticks(), rotation=45)
@@ -259,7 +259,7 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     scenario_vals = list(scenario.values())
 
     ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='k', label='Announced')
-    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', bottom=announced_vals, label='Scenario')
+    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', bottom=announced_vals, label='Additional required')
 
     xlabels = [label_map[c] for c in components]
 
