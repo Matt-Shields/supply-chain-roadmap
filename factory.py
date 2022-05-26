@@ -21,11 +21,14 @@ class Factory():
 
         self.COD = self.define_COD(df, generic, facility)
 
+        self.name = component
         self.throughput = df.loc['Annual throughput', 'Value']
         self.investment = df.loc['Investment cost', 'Value']
         self.lead_time = df.loc['Lead time', 'Value']
         self.total_jobs = df.loc['Total Direct Jobs', 'Value']
-        # TODO - break down into individual jobs
+        self.lead_time = df.loc['Lead time', 'Value']
+
+        self.announced_date = self.COD - self.lead_time  # TODO: turn to method and possibly restructure input spreadsheets
 
     def define_COD(self, df, generic, facility):
         """Either read COD for facility or calculate from annoucmentn"""

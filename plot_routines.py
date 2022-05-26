@@ -252,8 +252,6 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
         announced[c] = count1
         scenario[c] = count2
 
-        # bar_color.append(color_list[c])
-
     fig, ax = initFigAxis()
     announced_vals = list(announced.values())
     scenario_vals = list(scenario.values())
@@ -265,10 +263,6 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
 
     ax.set_xticklabels(components, rotation=90)
     ax.set_ylabel('Number of facilities')
-
-    # patch1 = mpatches.Patch(facecolor='white', edgecolor='k', hatch=color_list['Announced_hatch'], label='Announced facilities')
-    # patch2 = mpatches.Patch(facecolor='white',  edgecolor='k', hatch=color_list['Scenario_hatch'], label='Additional required facilities')
-    # handles = [patch1, patch2]
 
     ax.legend(loc='upper left')
 
@@ -296,24 +290,35 @@ def stacked_bar_2ser(x, y1, y2, c1, c2, n1, n2, ylabel, fname=None, ymax=None):
         mysave(fig, fname)
         plt.close()
 
-# def plot_job_breakdown(x, y1, y2, components, color_list, ylabel, fname=None):
-#     """ PLot the cumulative investment or jobs in the overall supply chain"""
-#     fig, ax = initFigAxis()
-#
-#     yBase = np.zeros(len(x))
-#     for c in components:
-#         yTotal = yBase + y1[c] + y2[c]
-#         yBase = yPlot
-#
-#     # Define breakdown into job categories
-#     ax.set_xlabel('Manufacturing date')
-#     ax.set_ylabel(ylabel)
-#     ax.get_yaxis().set_major_formatter(
-#         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-#
-#     ax.legend(loc='upper left')
-#
-#     if fname is not None:
-#         myformat(ax)
-#         mysave(fig, fname)
-#         plt.close()
+def plot_gantt(announced, scenario, color_list, fname=None):
+    """Gantt chart showing announced and scenario construction times"""
+
+    # Extract information from each list of Facilities
+    names = []
+    start_date = []
+    duration = []
+    color = []
+    for a in announced:
+        names.append(a.name)
+        start_date.append(a.announced_date)
+        duration.append(a.lead_time)
+        color.append(color_list['Announced'])
+    s_ind = 0
+    for s in scenario:
+        _name = s.name + str(s_ind)
+        names.append(_name)
+        start_date.append(s.announced_date)
+        duration.append(s.lead_time)
+        color.append(color_list['Scenario'])
+        s_ind += 1
+    print(names, start_date, duration, color)
+
+    # Make horizontal bar (Gantt)charts
+    fig, ax = initFigAxis()
+    bar_height = 0.4
+    ax.barh(names[::-1], width=duration[::-1], height=bar_height, left=start_date[::-1], color=color[::-1])
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()

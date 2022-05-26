@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map
-from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities
+from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities, plot_gantt
 
 # Input paramters
 filepath_scenarios = "library/Generic_facilities.xlsx"
@@ -66,6 +66,10 @@ if __name__ == "__main__":
                                         c,
                                         years,
                                         generic=True)
+
+        # Construction Gantt charts
+        fname_gantt = 'results/'+ c + '_gantt'
+        plot_gantt(announced[c], scenario[c], color_list, fname_gantt)
 
         # Sum up propeties of each facility
         total_announced_throughput[c] = sum_property(years, announced[c], 'annual_throughput')
