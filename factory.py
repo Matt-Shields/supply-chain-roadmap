@@ -8,6 +8,10 @@ __email__ = "matt.shields@nrel.gov"
 import numpy as np
 import pandas as pd
 
+# Standard inputs
+port_time = 3
+port_overlap_time = 0.25
+
 class Factory():
     """ Define factory class """
     def __init__(self, filepath, component, years, generic, facility=None):
@@ -27,8 +31,11 @@ class Factory():
         self.lead_time = df.loc['Lead time', 'Value']
         self.total_jobs = df.loc['Total Direct Jobs', 'Value']
         self.lead_time = df.loc['Lead time', 'Value']
+        self.port_time = port_time
+        self.port_overlap_time = port_overlap_time
+        self.construction_time = self.lead_time*self.port_overlap_time + self.port_time
 
-        self.announced_date = self.COD - self.lead_time  # TODO: turn to method and possibly restructure input spreadsheets
+        self.announced_date = self.COD - self.construction_time
 
     def define_COD(self, df, generic, facility):
         """Either read COD for facility or calculate from annoucmentn"""

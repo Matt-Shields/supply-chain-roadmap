@@ -100,7 +100,6 @@ label_map = {'Monopile': 'Monopile',
             'Export cable': 'Export \ncable',
             'WTIV': 'WTIV',
             'Steel plate': 'Steel \nplate'
-
 }
 
 def read_future_scenarios(file, sheet):

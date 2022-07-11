@@ -16,7 +16,7 @@ filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'Transition piece', 'Semisubmersible',  'Array cable', 'Export cable', 'WTIV', 'Steel plate']
+components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate', 'Flange']
 
 if __name__ == "__main__":
     # Demand

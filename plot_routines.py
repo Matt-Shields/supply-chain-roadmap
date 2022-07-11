@@ -301,14 +301,14 @@ def plot_gantt(announced, scenario, color_list, fname=None):
     for a in announced:
         names.append(a.name)
         start_date.append(a.announced_date)
-        duration.append(a.lead_time)
+        duration.append(a.construction_time)
         color.append(color_list['Announced'])
     s_ind = 0
     for s in scenario:
         _name = s.name + str(s_ind)
         names.append(_name)
         start_date.append(s.announced_date)
-        duration.append(s.lead_time)
+        duration.append(s.construction_time)
         color.append(color_list['Scenario'])
         s_ind += 1
     print(names, start_date, duration, color)
