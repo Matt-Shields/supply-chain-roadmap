@@ -8,7 +8,7 @@ __email__ = "matt.shields@nrel.gov"
 import numpy as np
 import pandas as pd
 
-from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map
+from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map
 from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities, plot_gantt
 
 # Input paramters
@@ -46,6 +46,8 @@ if __name__ == "__main__":
     scenario = {}
     aggr_announced = {}
     aggr_scenario = {}
+    announced_list = []
+    scenario_list = []
 
     total_announced_throughput = {}
     total_scenario_throughput = {}
@@ -60,7 +62,7 @@ if __name__ == "__main__":
                                         indiv_announced,
                                         c,
                                         years,
-                                        generic=False)
+                                        generic=False, name_map = announced_name_map)
         # Scenario facilities
         scenario[c] = define_factories(filepath_scenarios,
                                         indiv_scenario,
@@ -68,6 +70,8 @@ if __name__ == "__main__":
                                         years,
                                         generic=True)
 
+        announced_list += announced[c]
+        scenario_list += scenario[c]
         # Construction Gantt charts
         fname_gantt = 'results/'+ c + '_gantt'
         plot_gantt(announced[c], scenario[c], color_list, fname_gantt)
@@ -135,4 +139,7 @@ plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, co
 
 plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
 
+# Construction Gantt charts
+fname_gantt2 = 'results/overall_gantt'
+plot_gantt(announced_list, scenario_list, color_list, fname_gantt2)
 # plot_job_breakdown()

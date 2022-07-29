@@ -24,8 +24,8 @@ tier23_scaling = {'Flange': ['Tower', 1],
     'Bearing': ['Nacelle', 4],  # yaw, 3xpitch,
     'Hub': ['Nacelle', 1],
     'Bedplate': ['Nacelle', 1],
-    'Steel plate': [['Monopile', 2500], ['Tower', 900]],
-    'Casting': [['Nacelle', 2]] 
+    'Steel plate': [['Monopile', 2500], ['Tower', 900], ['Semisubmersible', 3000]],
+    'Casting': [['Nacelle', 2]]
 }
 
 job_breakdown = {'Design and engineering': .03,
@@ -46,7 +46,7 @@ ymax_plots = {'Monopile': 350,
     'Array cable': 3500,
     'Export cable': 1800,
     'WTIV': 6,
-    'Steel plate': 1000000,
+    'Steel plate': 1200000,
     'Casting': 700,
     'Flange': 5000,
     'Mooring chain': 2500,
@@ -122,12 +122,27 @@ label_map = {'Monopile': 'Monopile',
             'Anchor': 'Anchor'
 }
 
+announced_name_map= {'EEW - Monopile': 'Port of Paulsboro, NJ',
+    'USWind - Monopile': 'Tradepoint Atlantic, MD',
+    'SGRE - Blade': 'Portsmouth Marine Terminal, VA',
+    'ASOW - Nacelle': 'New Jersey Wind Port, NJ',
+    'GE - Nacelle': 'New Jersey Wind Port, NJ',
+    'MarWel - Tower': 'Port of Albany, NY',
+    'Smulders - Transition piece': 'Port of Albany, NY',
+    'Nexans - Export cable': 'Goose Creek SC',
+    'Prysmian - Export cable': 'Brayton Point, MA',
+    'Hellenic - Array cable': 'Tradepoint Atlantic, MD',
+    'Keppel AmFELS - WTIV': 'Brownsville, TX',
+    'Sembcorp - WTIV': 'International',
+    'Nucor - Steel plate': 'Brandenburg, KY'
+}
+
 def read_future_scenarios(file, sheet, header):
     """Read in factory deployment for given scenario"""
     df = pd.read_excel(file, sheet_name=sheet, header=header, keep_default_na=False)
     dict = {}
     for index, row in df.iterrows():
-        dict[row['Factory']] = [row['Operational date'], row['State']]
+        dict[row['Factory']] = [row['Operational date'], row['State'], row['Name']]
     print(dict)
     return dict
 
@@ -153,13 +168,13 @@ def read_pipeline(file):
     return dict, manf_date
 
 
-def define_factories(file, facility_list, component, years, generic):
+def define_factories(file, facility_list, component, years, generic, name_map=None):
     """Instantiate Factory objects for each facility in pipeline"""
     _factories = []
     for fi in facility_list:
         if component in fi:
             if generic == False:
-                f = Factory(file, fi, years, generic)
+                f = Factory(file, fi, years, generic, name_map=name_map)
             else:
                 f = Factory(file, component, years, generic, facility_list[fi])
             _factories.append(f)

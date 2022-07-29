@@ -14,18 +14,20 @@ port_overlap_time = 0.25
 
 class Factory():
     """ Define factory class """
-    def __init__(self, filepath, component, years, generic, facility=None):
-        self.read_attributes(filepath, component, generic, facility)
+    def __init__(self, filepath, component, years, generic, facility=None, name_map=None):
+        self.read_attributes(filepath, component, generic, facility, name_map)
         self.define_schedule(years)
         self.outputs = {}
 
-    def read_attributes(self, filepath, component, generic, facility):
+    def read_attributes(self, filepath, component, generic, facility, name_map):
         """Read in CSV and assign values to Factory object"""
         df = pd.read_excel(filepath, sheet_name=component, index_col=0)
 
         self.COD = self.define_COD(df, generic, facility)
-
-        self.name = component
+        if generic==False:
+            self.name = name_map[component]
+        else:
+            self.name = facility[2]
         self.throughput = df.loc['Annual throughput', 'Value']
         self.investment = df.loc['Investment cost', 'Value']
         self.lead_time = df.loc['Lead time', 'Value']
