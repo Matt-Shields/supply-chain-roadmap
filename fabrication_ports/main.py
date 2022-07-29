@@ -12,7 +12,7 @@ if __name__ == '__main__':
     output_cols = list(ports.columns)
 
     # Number of components to screen for
-    component_list = ['Blade', 'Nacelle', 'Tower', 'Monopile', 'Jacket', 'Cable', 'Transition piece', 'Steel plate']
+    component_list = ['Blade', 'Nacelle', 'Tower', 'Monopile', 'Jacket', 'GBF', 'Cable', 'Transition piece', 'Steel plate', 'Flange', 'Bedplate']
 
     # How flexible are we in looking at ports
     scale_factor = 0.75

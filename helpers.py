@@ -12,8 +12,8 @@ from factory import Factory
 
 # Define scaling from Tier 1 to Tier 2 and 3.  Format:
 #  {"new component": ["original component', scaling factor"]}
-moor_chain = 100
-moor_rope = 800
+moor_chain = 600/1000
+moor_rope = 1000/1000
 tier23_scaling = {'Flange': ['Tower', 1],
     'Generator': ['Nacelle', 1],
     'Gearbox': ['Nacelle', 0.33],  # 1/3 market share (Vestas only)
@@ -36,6 +36,7 @@ job_breakdown = {'Design and engineering': .03,
 
 ymax_plots = {'Monopile': 350,
     'Jacket': 120,
+    'GBF': 120,
     'Semisubmersible': 300,
     'Blade': 1600,
     'Nacelle': 800,
@@ -44,7 +45,12 @@ ymax_plots = {'Monopile': 350,
     'Array cable': 3500,
     'Export cable': 1800,
     'WTIV': 6,
-    'Steel plate': 1000000
+    'Steel plate': 1000000,
+    'Flange': 5000,
+    'Mooring chain': 2500,
+    'Mooring rope': 2500,
+    'Anchor': 3000
+
 }
 
 color_list = {
@@ -64,7 +70,11 @@ color_list = {
     # Color scheme for components: https://paletton.com/#uid=70m0P1kuovZh9G7nlz8xWp1E7j0kHlz6lxHTsYGtJjpEN5j5kLGs1q7F9IcGrO+m8T6fxkmuEKatTJhdM3rQzhvZqJ
     'Monopile': '#FF670D',
     'Jacket': '#C74A00',
+    'GBF': 'k',
     'Semisubmersible': '#FF8518',
+    'Mooring chain': 'k',
+    'Mooring rope': 'k',
+    'Anchor': 'k',
     'Blade': '#698FE8',
     'Nacelle': '#7679DB',
     'Tower': '#ABADED',
@@ -73,6 +83,7 @@ color_list = {
     'Export cable': '#00AE83',
     'WTIV': '#B08300',
     'Steel plate': '#FFBE00',
+    'Flange': 'k',
     # Color schem for announced/scneario:
     'Announced': '#5D63AA',
     'Scenario': '#2F8B6F',
@@ -91,6 +102,7 @@ color_list = {
 
 label_map = {'Monopile': 'Monopile',
             'Jacket': 'Jacket',
+            'GBF': 'Gravity-based \nfoundation',
             'Semisubmersible': 'Semisub-\nmersible',
             'Blade': 'Blade',
             'Nacelle': 'Nacelle',
@@ -99,7 +111,11 @@ label_map = {'Monopile': 'Monopile',
             'Array cable': 'Array \ncable',
             'Export cable': 'Export \ncable',
             'WTIV': 'WTIV',
-            'Steel plate': 'Steel \nplate'
+            'Steel plate': 'Steel \nplate',
+            'Flange': 'Flange',
+            'Mooring chain': 'Mooring \nchain',
+            'Mooring rope': 'Mooring \nrope',
+            'Anchor': 'Anchor'
 }
 
 def read_future_scenarios(file, sheet):

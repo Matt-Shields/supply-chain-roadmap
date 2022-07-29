@@ -16,7 +16,7 @@ filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 
-components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate', 'Flange']
+components = [ 'Flange', 'Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate', 'Semisubmersible', 'Mooring chain', 'Mooring rope']
 
 if __name__ == "__main__":
     # Demand
@@ -90,8 +90,9 @@ if __name__ == "__main__":
         if c == 'WTIV':
             ylabel = 'Cumulative wind turbine installation vessels'
             _plot_average = None
-        elif c == 'Semisubmersible':
-            _plot_average = [2026,2033]
+        elif c == 'Semisubmersible' or 'Mooring chain':
+            ylabel = 'Throughput (' + c + '/year)'
+            _plot_average = [2028,2033]
         else:
             ylabel = 'Throughput (' + c + '/year)'
             _plot_average = [2026,2033]

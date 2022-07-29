@@ -30,7 +30,6 @@ class Factory():
         self.investment = df.loc['Investment cost', 'Value']
         self.lead_time = df.loc['Lead time', 'Value']
         self.total_jobs = df.loc['Total Direct Jobs', 'Value']
-        self.lead_time = df.loc['Lead time', 'Value']
         self.port_time = port_time
         self.port_overlap_time = port_overlap_time
         self.construction_time = self.lead_time*self.port_overlap_time + self.port_time
