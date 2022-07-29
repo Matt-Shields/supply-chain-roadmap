@@ -182,6 +182,22 @@ def plot_diff(x, y, ylabel, color, fname):
         mysave(fig, fname)
         plt.close()
 
+    return [yneg, ypos]
+
+def plot_total_diff(x, y, color, fname):
+    fig, ax = initFigAxis()
+    # Loop through all component_list
+
+    y_bot_pos = [0] * len(x)
+    y_bot_neg = [0] * len(x)
+    for k, v in y.items():
+        # v[0] = negative, v[1] = positive
+        ax.bar(x, v[0], color=color[k], edgecolor='k', label=k, bottom=y_bot_neg)
+        ax.bar(x, v[1], color=color[k], edgecolor='k', bottom=y_bot_pos)
+        y_bot_neg = v[0]
+        y_bot_pos = v[1]
+    plt.show()
+
 def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
@@ -311,7 +327,6 @@ def plot_gantt(announced, scenario, color_list, fname=None):
         duration.append(s.construction_time)
         color.append(color_list['Scenario'])
         s_ind += 1
-    print(names, start_date, duration, color)
 
     # Make horizontal bar (Gantt)charts
     fig, ax = initFigAxis()

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map
-from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_num_facilities, plot_gantt
+from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt
 
 # Input paramters
 filepath_scenarios = "library/Generic_facilities.xlsx"
@@ -17,7 +17,8 @@ filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 filepath_ports = "fabrication_ports/ports_scenario.xlsx"
 
-components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
+components = ['Blade', 'Nacelle','Transition piece']
+ # 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
 
 if __name__ == "__main__":
     # Demand
@@ -48,6 +49,7 @@ if __name__ == "__main__":
     aggr_scenario = {}
     announced_list = []
     scenario_list = []
+    annual_diff = {}
 
     total_announced_throughput = {}
     total_scenario_throughput = {}
@@ -113,7 +115,7 @@ if __name__ == "__main__":
             y_diff = total_scenario_throughput[c] - total_demand[c]
 
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
-        plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
+        annual_diff[c] = plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
         #
         # Plot investment
         fname = 'results/'+ c + '_investment'
@@ -143,3 +145,7 @@ plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fna
 fname_gantt2 = 'results/overall_gantt'
 plot_gantt(announced_list, scenario_list, color_list, fname_gantt2)
 # plot_job_breakdown()
+
+# Overall difference in component_list
+fname_total_diff = 'results/total_diff'
+plot_total_diff(years, annual_diff, color_list, fname_total_diff)

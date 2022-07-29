@@ -143,7 +143,6 @@ def read_future_scenarios(file, sheet, header):
     dict = {}
     for index, row in df.iterrows():
         dict[row['Factory']] = [row['Operational date'], row['State'], row['Name']]
-    print(dict)
     return dict
 
 def read_pipeline(file):
