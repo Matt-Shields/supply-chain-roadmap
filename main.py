@@ -15,6 +15,7 @@ from plot_routines import plot_supply_demand, plot_diff, plot_cumulative, plot_n
 filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
+filepath_ports = "fabrication_ports/ports_scenario.xlsx"
 
 components = [ 'Flange', 'Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate', 'Semisubmersible', 'Mooring chain', 'Mooring rope']
 
@@ -38,7 +39,7 @@ if __name__ == "__main__":
         'Nucor - Steel plate'
     ]
     # Scenarios
-    indiv_scenario = read_future_scenarios(filepath_scenarios, 'Avg Demand Scenario')
+    indiv_scenario = read_future_scenarios(filepath_ports, 'Avg Demand Scenario', header=7)
 
 
     announced = {}

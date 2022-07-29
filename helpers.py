@@ -118,12 +118,13 @@ label_map = {'Monopile': 'Monopile',
             'Anchor': 'Anchor'
 }
 
-def read_future_scenarios(file, sheet):
+def read_future_scenarios(file, sheet, header):
     """Read in factory deployment for given scenario"""
-    df = pd.read_excel(file, sheet_name=sheet)
+    df = pd.read_excel(file, sheet_name=sheet, header=header, keep_default_na=False)
     dict = {}
     for index, row in df.iterrows():
-        dict[row['Factory']] = [row['COD'], row['Location']]
+        dict[row['Factory']] = [row['Operational date'], row['State']]
+    print(dict)
     return dict
 
 def read_pipeline(file):
