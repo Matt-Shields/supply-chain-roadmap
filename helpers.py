@@ -24,7 +24,8 @@ tier23_scaling = {'Flange': ['Tower', 1],
     'Bearing': ['Nacelle', 4],  # yaw, 3xpitch,
     'Hub': ['Nacelle', 1],
     'Bedplate': ['Nacelle', 1],
-    'Steel plate': [['Monopile', 2500], ['Tower', 900]]
+    'Steel plate': [['Monopile', 2500], ['Tower', 900]],
+    'Casting': [['Nacelle', 2]] 
 }
 
 job_breakdown = {'Design and engineering': .03,
@@ -46,6 +47,7 @@ ymax_plots = {'Monopile': 350,
     'Export cable': 1800,
     'WTIV': 6,
     'Steel plate': 1000000,
+    'Casting': 700,
     'Flange': 5000,
     'Mooring chain': 2500,
     'Mooring rope': 2500,
@@ -84,6 +86,7 @@ color_list = {
     'WTIV': '#B08300',
     'Steel plate': '#FFBE00',
     'Flange': 'k',
+    'Casting': 'k',
     # Color schem for announced/scneario:
     'Announced': '#5D63AA',
     'Scenario': '#2F8B6F',
@@ -112,6 +115,7 @@ label_map = {'Monopile': 'Monopile',
             'Export cable': 'Export \ncable',
             'WTIV': 'WTIV',
             'Steel plate': 'Steel \nplate',
+            'Casting': 'Casting',
             'Flange': 'Flange',
             'Mooring chain': 'Mooring \nchain',
             'Mooring rope': 'Mooring \nrope',

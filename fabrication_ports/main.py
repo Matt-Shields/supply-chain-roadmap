@@ -66,6 +66,10 @@ if __name__ == '__main__':
             else:
                 failed_conditions.append('quayside length')
                 _quayside_cost = upgrade_costs['quayside']
+        elif x['Port'] in exceptions['Quayside']:
+            conditions_met += 1
+            failed_conditions.append('quayside length')
+            _quayside_cost = upgrade_costs['quayside']
         else:
             failed_conditions.append('quayside length')
             _quayside_cost = upgrade_costs['quayside']

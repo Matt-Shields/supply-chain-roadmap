@@ -89,7 +89,8 @@ upgrade_costs = {
 upgrade_time = 3
 
 exceptions = {
-'Laydown': ['Arthur Kill Terminal']
+'Laydown': ['Arthur Kill Terminal'],
+'Quayside': ['Schiller Newington, Portsmouth']
 }
 
 scenario ={

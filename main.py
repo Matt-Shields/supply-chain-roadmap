@@ -17,7 +17,7 @@ filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 filepath_ports = "fabrication_ports/ports_scenario.xlsx"
 
-components = [ 'Flange', 'Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'WTIV', 'Steel plate', 'Semisubmersible', 'Mooring chain', 'Mooring rope']
+components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
 
 if __name__ == "__main__":
     # Demand
