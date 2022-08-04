@@ -94,10 +94,11 @@ if __name__ == "__main__":
         color_throughput = [color_list['Announced'], color_list['Scenario'], 'k']
         name_throughput = ['Announced','Additional required','Annual demand']
         hatch_throughput = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
+
         if c == 'WTIV':
             ylabel = 'Cumulative wind turbine installation vessels'
             _plot_average = None
-        elif c == 'Semisubmersible' or 'Mooring chain':
+        elif c == 'Semisubmersible' or c == 'Mooring chain' or c == 'Mooring rope' or c == "Anchors":
             ylabel = 'Throughput (' + c + '/year)'
             _plot_average = [2028,2033]
         else:
