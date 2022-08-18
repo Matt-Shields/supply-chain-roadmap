@@ -43,11 +43,11 @@ deltaShow = 4
 linewidth = 3
 
 
-def myformat(ax, linewidth=linewidth, mode='save'):
+def myformat(ax, linewidth=linewidth, yticklabel=tickLabelSize, mode='save'):
     assert type(mode) == type('')
     assert mode.lower() in ['save', 'show'], 'Unknown mode'
 
-    def myformat(myax, linewidth=linewidth):
+    def myformat(myax, linewidth=linewidth, yticklabel=tickLabelSize,):
         if mode.lower() == 'show':
             for i in myax.get_children():  # Gets EVERYTHING!
                 if isinstance(i, txt.Text):
@@ -76,7 +76,7 @@ def myformat(ax, linewidth=linewidth, mode='save'):
             for i in myax.get_xticklines():
                 i.set_linewidth(3)
             for i in myax.get_yticklabels():
-                i.set_size(tickLabelSize + deltaShow)
+                i.set_size(yticklabel + deltaShow)
             for i in myax.get_yticklines():
                 i.set_linewidth(3)
 
@@ -322,7 +322,7 @@ def stacked_bar_2ser(x, y1, y2, c1, c2, n1, n2, ylabel, fname=None, ymax=None):
         mysave(fig, fname)
         plt.close()
 
-def plot_gantt(announced, scenario, color_list, fname=None):
+def plot_gantt(components, announced, scenario, color_list, single_component=False, fname=None):
     """Gantt chart showing announced and scenario construction times"""
 
     # Extract information from each list of Facilities
@@ -330,26 +330,48 @@ def plot_gantt(announced, scenario, color_list, fname=None):
     start_date = []
     duration = []
     color = []
+    facility_ind = {}
+    for c in components:
+        facility_ind[c] = 1
+
     for a in announced:
-        names.append(a.name)
+        if single_component == False:
+            fi = facility_ind[a.component]
+            names.append(a.component + '#' + str(fi) + ' (' + a.name.split(', ')[1] + ')')
+        else:
+            names.append(a.name)
         start_date.append(a.announced_date)
         duration.append(a.construction_time)
         color.append(color_list['Announced'])
-    s_ind = 0
+        facility_ind[a.component] += 1
+
     for s in scenario:
-        _name = s.name + str(s_ind)
+        # _name = s.name + str(s_ind)
+        fi = facility_ind[s.component]
+        _name = s.component + '#' + str(fi) + ' (' + s.name.split(', ')[1] + ')'
         names.append(_name)
         start_date.append(s.announced_date)
         duration.append(s.construction_time)
         color.append(color_list['Scenario'])
-        s_ind += 1
+        facility_ind[s.component] += 1
+
+    # Sort by start data
+    start_ind = np.argsort(start_date)
+    sort_names = [names[i] for i in start_ind]
+    sort_duration = [duration[i] for i in start_ind]
+    sort_start = [start_date[i] for i in start_ind]
+    sort_color = [color[i] for i in start_ind]
 
     # Make horizontal bar (Gantt)charts
     fig, ax = initFigAxis()
     bar_height = 0.4
-    ax.barh(names[::-1], width=duration[::-1], height=bar_height, left=start_date[::-1], color=color[::-1])
+    ax.barh(sort_names[::-1], width=sort_duration[::-1], height=bar_height, left=sort_start[::-1], color=sort_color[::-1])
+    ax.tick_params(axis='y', which='major', labelsize=5)
 
     if fname:
-        myformat(ax)
+        if single_component == False:
+            myformat(ax, yticklabel=5)
+        else:
+            myformat(ax)
         mysave(fig, fname)
         plt.close()

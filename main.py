@@ -77,7 +77,7 @@ if __name__ == "__main__":
         scenario_list += scenario[c]
         # Construction Gantt charts
         fname_gantt = 'results/'+ c + '_gantt'
-        plot_gantt(announced[c], scenario[c], color_list, fname_gantt)
+        plot_gantt(components, announced[c], scenario[c], color_list, single_component=True, fname=fname_gantt)
 
         # Sum up propeties of each facility
         total_announced_throughput[c] = sum_property(years, announced[c], 'annual_throughput')
@@ -142,12 +142,11 @@ plot_cumulative(years, total_announced_investment, total_scenario_investment, co
 
 plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
 
-print(components, indiv_announced, indiv_scenario)
 plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
 
 # Construction Gantt charts
 fname_gantt2 = 'results/overall_gantt'
-plot_gantt(announced_list, scenario_list, color_list, fname_gantt2)
+plot_gantt(components, announced_list, scenario_list, color_list, fname=fname_gantt2)
 # plot_job_breakdown()
 
 # Overall difference in component_list

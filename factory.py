@@ -26,8 +26,10 @@ class Factory():
         self.COD = self.define_COD(df, generic, facility)
         if generic==False:
             self.name = name_map[component]
+            self.component = component.split(' - ')[1]
         else:
             self.name = facility[2]
+            self.component = component
         self.throughput = df.loc['Annual throughput', 'Value']
         self.investment = df.loc['Investment cost', 'Value']
         self.lead_time = df.loc['Lead time', 'Value']
