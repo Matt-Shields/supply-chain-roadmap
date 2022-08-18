@@ -192,29 +192,25 @@ def plot_diff(x, y, ylabel, color, fname):
 
     return ypos
 
-def plot_total_diff(x, y, fname):
+def plot_total_diff(x, y, demand, fname):
     fig, ax = initFigAxis()
     # Loop through all components
-    num_components = 0
+    num_components = [0] * len(x)
     sum_percent = [0] * len(x)
     for k, v in y.items():
         v = [0 if math.isnan(x) else x for x in v]
         v = [1 if x > 1 else x for x in v]
         sum_percent = [i[0] + i[1] for i in zip(sum_percent, v)]
 
-        num_components += 1  ### TODO: num components per year (diff start dates)
-        print(k, v, sum_percent, num_components)
-    total_percent = [s / num_components for s in sum_percent]
-    ax.plot(x, total_percent)
-    # y_bot_pos = [0] * len(x)
-    # y_bot_neg = [0] * len(x)
-    # for k, v in y.items():
-    #     # v[0] = negative, v[1] = positive
-    #     ax.bar(x, v[0], color=color[k], edgecolor='k', label=k, bottom=y_bot_neg)
-    #     ax.bar(x, v[1], color=color[k], edgecolor='k', bottom=y_bot_pos)
-    #     y_bot_neg = v[0]
-    #     y_bot_pos = v[1]
+        annual_components  = [1 if x!=0 else 0 for x in demand[k]]
+        num_components = [i[0] + i[1] for i in zip(annual_components, num_components)]
 
+    total_percent = [100*x[0] / x[1] if x[1] != 0 else 0 for x in zip(sum_percent, num_components)]
+    ax.plot(x, total_percent, 'k')
+    plt.fill_between(x, total_percent)
+
+    ax.set_xlabel('Manufacturing date')
+    ax.set_ylabel('Percent of component demand met by domestic supply chain')
 
     plt.show()
 

@@ -49,7 +49,7 @@ if __name__ == "__main__":
     announced_list = []
     scenario_list = []
     annual_diff_pos = {}
-    annual_perc_diff = {}
+    annual_diff = {}
     average = {}
 
     total_announced_throughput = {}
@@ -118,8 +118,8 @@ if __name__ == "__main__":
 
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
         annual_diff_pos[c] = plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
-        # annual_perc_diff[c] = annual_diff_pos[c] / average[c]
-        annual_perc_diff[c] = y_prod / total_demand[c]
+        annual_diff[c] = y_prod / average[c]
+        # annual_diff[c] = y_prod / total_demand[c]
         # Plot investment
         fname = 'results/'+ c + '_investment'
         y_investment = [total_announced_investment[c], total_scenario_investment[c] ]
@@ -152,5 +152,4 @@ plot_gantt(announced_list, scenario_list, color_list, fname_gantt2)
 
 # Overall difference in component_list
 fname_total_diff = 'results/total_diff'
-
-plot_total_diff(years, annual_perc_diff, fname_total_diff)
+plot_total_diff(years, annual_diff, total_demand, fname_total_diff)
