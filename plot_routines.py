@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 import numpy as np
 from matplotlib.patches import Rectangle
 import matplotlib.cm as cm
@@ -138,9 +139,14 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=No
             _ind_i = np.where(x == plot_average[0])[0][0]
             _ind_f = np.where(x == plot_average[1])[0][0]
             x_average = x[_ind_i:_ind_f+1]
-            y_average = np.ones(len(x_average)) * np.mean(y2[_ind_i:_ind_f+1])
+            _y_avg = np.mean(y2[_ind_i:_ind_f+1])
+            y_average = np.ones(len(x_average)) * _y_avg
             label_avg = 'Average demand between ' + str(x[_ind_i]) + ' and ' + str(x[_ind_f])
             ax.plot(x_average, y_average, c=line, linestyle='--', label=label_avg)
+        else:
+            _y_avg = -999
+    else:
+        _y_avg = -999
     # else:
     #     # ax.plot(x, y2, 'k', label='Total demand')
     ax.set_xticks(x)
@@ -159,6 +165,8 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=No
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+    return _y_avg
 
 def plot_diff(x, y, ylabel, color, fname):
     fig, ax = initFigAxis()
@@ -182,20 +190,32 @@ def plot_diff(x, y, ylabel, color, fname):
         mysave(fig, fname)
         plt.close()
 
-    return [yneg, ypos]
+    return ypos
 
-def plot_total_diff(x, y, color, fname):
+def plot_total_diff(x, y, fname):
     fig, ax = initFigAxis()
-    # Loop through all component_list
-
-    y_bot_pos = [0] * len(x)
-    y_bot_neg = [0] * len(x)
+    # Loop through all components
+    num_components = 0
+    sum_percent = [0] * len(x)
     for k, v in y.items():
-        # v[0] = negative, v[1] = positive
-        ax.bar(x, v[0], color=color[k], edgecolor='k', label=k, bottom=y_bot_neg)
-        ax.bar(x, v[1], color=color[k], edgecolor='k', bottom=y_bot_pos)
-        y_bot_neg = v[0]
-        y_bot_pos = v[1]
+        v = [0 if math.isnan(x) else x for x in v]
+        v = [1 if x > 1 else x for x in v]
+        sum_percent = [i[0] + i[1] for i in zip(sum_percent, v)]
+
+        num_components += 1  ### TODO: num components per year (diff start dates)
+        print(k, v, sum_percent, num_components)
+    total_percent = [s / num_components for s in sum_percent]
+    ax.plot(x, total_percent)
+    # y_bot_pos = [0] * len(x)
+    # y_bot_neg = [0] * len(x)
+    # for k, v in y.items():
+    #     # v[0] = negative, v[1] = positive
+    #     ax.bar(x, v[0], color=color[k], edgecolor='k', label=k, bottom=y_bot_neg)
+    #     ax.bar(x, v[1], color=color[k], edgecolor='k', bottom=y_bot_pos)
+    #     y_bot_neg = v[0]
+    #     y_bot_pos = v[1]
+
+
     plt.show()
 
 def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):

@@ -17,8 +17,7 @@ filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 filepath_ports = "fabrication_ports/ports_scenario.xlsx"
 
-components = ['Blade', 'Nacelle','Transition piece']
- # 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
+components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
 
 if __name__ == "__main__":
     # Demand
@@ -49,7 +48,9 @@ if __name__ == "__main__":
     aggr_scenario = {}
     announced_list = []
     scenario_list = []
-    annual_diff = {}
+    annual_diff_pos = {}
+    annual_perc_diff = {}
+    average = {}
 
     total_announced_throughput = {}
     total_scenario_throughput = {}
@@ -86,8 +87,6 @@ if __name__ == "__main__":
         total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
         total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
 
-        # print(total_scenario_investment)
-
         # Compare with demand
         fname = 'results/'+ c + '_supply_demand'
         y_throughput = [total_announced_throughput[c], total_scenario_throughput[c] ]
@@ -105,19 +104,22 @@ if __name__ == "__main__":
             ylabel = 'Throughput (' + c + '/year)'
             _plot_average = [2026,2033]
 
-        plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], ylim=ymax_plots[c], fname=fname, plot_average=_plot_average)
+        average[c] = plot_supply_demand(years, zip(y_throughput, color_throughput, name_throughput, hatch_throughput), color_list, c, ylabel, y2=total_demand[c], ylim=ymax_plots[c], fname=fname, plot_average=_plot_average)
         #
         # Plot difference between supply and demand
         fname_diff = 'results/' + c + 'diff'
         try:
             y_diff = total_announced_throughput[c] + total_scenario_throughput[c] - total_demand[c]
+            y_prod = total_announced_throughput[c] + total_scenario_throughput[c]
         except ValueError:
             # No announced facilities
             y_diff = total_scenario_throughput[c] - total_demand[c]
+            y_prod = total_scenario_throughput[c]
 
         ylabel_diff = 'Difference from annual demand (' + c + '/year)'
-        annual_diff[c] = plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
-        #
+        annual_diff_pos[c] = plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
+        # annual_perc_diff[c] = annual_diff_pos[c] / average[c]
+        annual_perc_diff[c] = y_prod / total_demand[c]
         # Plot investment
         fname = 'results/'+ c + '_investment'
         y_investment = [total_announced_investment[c], total_scenario_investment[c] ]
@@ -140,6 +142,7 @@ plot_cumulative(years, total_announced_investment, total_scenario_investment, co
 
 plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
 
+print(components, indiv_announced, indiv_scenario)
 plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
 
 # Construction Gantt charts
@@ -149,4 +152,5 @@ plot_gantt(announced_list, scenario_list, color_list, fname_gantt2)
 
 # Overall difference in component_list
 fname_total_diff = 'results/total_diff'
-plot_total_diff(years, annual_diff, color_list, fname_total_diff)
+
+plot_total_diff(years, annual_perc_diff, fname_total_diff)
