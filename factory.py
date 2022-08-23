@@ -11,6 +11,7 @@ import pandas as pd
 # Standard inputs
 port_time = 3
 port_overlap_time = 0.25
+learning_curve = {0: 0.5, 1: 0.75}
 
 class Factory():
     """ Define factory class """
@@ -53,6 +54,14 @@ class Factory():
         _ind = np.where(years == self.COD)[0]
         self.annual_throughput = np.zeros(len(years))
         self.annual_throughput[_ind[0]:] = self.throughput
+        # Correct for learning learning_curve
+        for yr,perc in learning_curve.items():
+            _yr_ind = _ind[0] + yr
+            try:
+                self.annual_throughput[_yr_ind] = perc * self.throughput
+            except IndexError:
+                print('index error')
+        print(self.annual_throughput)
         self.annual_investment = np.zeros(len(years))
         self.annual_investment[_ind[0]:] = self.investment
         self.annual_jobs = np.zeros(len(years))

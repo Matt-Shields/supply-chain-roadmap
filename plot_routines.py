@@ -212,7 +212,10 @@ def plot_total_diff(x, y, demand, fname):
     ax.set_xlabel('Manufacturing date')
     ax.set_ylabel('Percent of component demand met by domestic supply chain')
 
-    plt.show()
+    if fname is not None:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
 
 def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
