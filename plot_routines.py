@@ -217,6 +217,8 @@ def plot_total_diff(x, y, demand, fname):
         mysave(fig, fname)
         plt.close()
 
+    return total_percent
+
 def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
@@ -376,5 +378,15 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
             myformat(ax, yticklabel=5)
         else:
             myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+def lineplot_comp(x, y, ylabels, linetype, fname):
+    fig, ax = initFigAxis()
+    for y, l, t in zip(y, ylabels, linetype):
+        ax.plot(x, y, t, label=l)
+    ax.legend()
+    if fname:
+        myformat(ax)
         mysave(fig, fname)
         plt.close()

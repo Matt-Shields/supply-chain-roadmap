@@ -145,12 +145,12 @@ def read_future_scenarios(file, sheet, header):
         dict[row['Factory']] = [row['Operational date'], row['State'], row['Name']]
     return dict
 
-def read_pipeline(file):
+def read_pipeline(file, cod_shift):
     """Read in summary of deploymnet pipeline from Phase 1 report"""
     df = pd.read_csv(file)
 
     cod = df['COD']
-    manf_date = cod - 2  # TODO - input?
+    manf_date = cod - cod_shift
 
     dict = {}
     for col, vals in df.items():

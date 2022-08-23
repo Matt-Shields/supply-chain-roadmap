@@ -60,8 +60,8 @@ class Factory():
             try:
                 self.annual_throughput[_yr_ind] = perc * self.throughput
             except IndexError:
-                print('index error')
-        print(self.annual_throughput)
+                # TODO: Fix
+                print('index error - learning rate applied at end of array in factory.py')
         self.annual_investment = np.zeros(len(years))
         self.annual_investment[_ind[0]:] = self.investment
         self.annual_jobs = np.zeros(len(years))

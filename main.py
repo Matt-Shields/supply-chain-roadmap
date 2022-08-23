@@ -9,19 +9,23 @@ import numpy as np
 import pandas as pd
 
 from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map
-from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt
+from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt, lineplot_comp
 
 # Input paramters
 filepath_scenarios = "library/Generic_facilities.xlsx"
 filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 filepath_ports = "fabrication_ports/ports_scenario_max.xlsx"
+filepath_deploy = "library/total_deployment.csv"
 
 components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
 
 if __name__ == "__main__":
     # Demand
-    total_demand, years= read_pipeline(filepath_pipeline)
+    total_demand, years= read_pipeline(filepath_pipeline, cod_shift=2)
+    _deploy = pd.read_csv(filepath_deploy)
+    cod_years = _deploy['COD']
+    total_deploy = _deploy['Cumulative deployment, MW']
 
     # Known facilities
     indiv_announced = ['EEW - Monopile',
@@ -151,4 +155,13 @@ plot_gantt(components, announced_list, scenario_list, color_list, fname=fname_ga
 
 # Overall difference in component_list
 fname_total_diff = 'results/total_diff'
-plot_total_diff(years, annual_diff, total_demand, fname_total_diff)
+domestic_sc_percent = plot_total_diff(years, annual_diff, total_demand, fname_total_diff)
+
+# Plot percentage of deployment from domestic supply chain
+fname_deploy_perc = 'results/deployment_impact'
+scaled_deploy = [(i/100)*j for i,j in zip(domestic_sc_percent, total_deploy)]
+deploy_scenarios = [total_deploy, scaled_deploy]
+ylabels = ['Baseline deployment', 'Supply chain constraints']
+linetype = ['-', '--']
+
+lineplot_comp(cod_years, deploy_scenarios, ylabels, linetype,  fname=fname_deploy_perc)
