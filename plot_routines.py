@@ -211,6 +211,7 @@ def plot_total_diff(x, y, demand, fname):
 
     ax.set_xlabel('Manufacturing date')
     ax.set_ylabel('Percent of component demand met by domestic supply chain')
+    ax.grid()
 
     if fname is not None:
         myformat(ax)
@@ -372,6 +373,7 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
     bar_height = 0.4
     ax.barh(sort_names[::-1], width=sort_duration[::-1], height=bar_height, left=sort_start[::-1], color=sort_color[::-1])
     ax.tick_params(axis='y', which='major', labelsize=5)
+    ax.grid()
 
     if fname:
         if single_component == False:
@@ -381,11 +383,14 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
         mysave(fig, fname)
         plt.close()
 
-def lineplot_comp(x, y, legend, linetype, fname):
+def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, fname):
     fig, ax = initFigAxis()
     for y, l, t in zip(y, legend, linetype):
         ax.plot(x, y, t, label=l)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
     ax.legend()
+    ax.grid()
     if fname:
         myformat(ax)
         mysave(fig, fname)

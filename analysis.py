@@ -10,6 +10,7 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
     total_demand, years= read_pipeline(filepath_pipeline, cod_shift=2)
     _deploy = pd.read_csv(filepath_deploy)
     cod_years = _deploy['COD']
+    annual_deploy = _deploy['Annual deployment, MW']
     total_deploy = _deploy['Cumulative deployment, MW']
 
     # Scenarios
@@ -118,15 +119,15 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
     plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
     #
     # Construction Gantt charts
-    fname_gantt2 = 'results/overall_gantt'
+    fname_gantt2 = 'results/' + plot_dir + '/overall_gantt'
     plot_gantt(components, announced_list, scenario_list, color_list, fname=fname_gantt2)
     # # plot_job_breakdown()
     #
     # Overall difference in component_list
-    fname_total_diff = 'results/total_diff'
+    fname_total_diff = 'results/' + plot_dir + '/total_diff'
     domestic_sc_percent = plot_total_diff(years, annual_diff, total_demand, fname_total_diff)
 
-    return cod_years, total_demand, domestic_sc_percent, total_deploy
+    return years, cod_years, total_demand, domestic_sc_percent, total_deploy, annual_deploy
     #
     # # Plot percentage of deployment from domestic supply chain
     # fname_deploy_perc = 'results/deployment_impact'

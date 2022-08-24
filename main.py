@@ -4,18 +4,20 @@ __copyright__ = "Copyright 2022, National Renewable Energy Laboratory"
 __maintainer__ = "Matt Shields"
 __email__ = "matt.shields@nrel.gov"
 
+import numpy as np
+
 from analysis import scenario_analysis as sa
 from plot_routines import lineplot_comp
 
 scenarios = {
 'Early': {
 'filepath_ports': "fabrication_ports/ports_scenario_min.xlsx",
-'legend': 'Early investment',
+'legend': 'Accelerated domestic supply chain growth',
 'linetype': '--'
 },
 'Late': {
 'filepath_ports': "fabrication_ports/ports_scenario_max.xlsx",
-'legend': 'Delayed investment',
+'legend': 'Conservative domestic supply chain growth',
 'linetype': '.-'
 }
 }
@@ -45,13 +47,14 @@ indiv_announced = ['EEW - Monopile',
 ]
 
 if __name__ == "__main__":
-    domestic_sc_percent = []
+    domestic_sc_percent_scenarios = []
     deploy_scenarios = []
     legend = []
     linetype = []
     ind = 1
     for k, v in scenarios.items():
-        cod_years, total_demand, domestic_sc_percent, total_deploy = sa(filepath_scenarios,
+        # Individual scenario results and plots
+        mnf_years, cod_years, total_demand, domestic_sc_percent, total_deploy, annual_deploy = sa(filepath_scenarios,
                 filepath_announced,
                 filepath_pipeline,
                 v['filepath_ports'],
@@ -60,17 +63,24 @@ if __name__ == "__main__":
                 indiv_announced,
                 k)
 
-        scaled_deploy = [(i/100)*j for i,j in zip(domestic_sc_percent, total_deploy)]
+        # Define parameters for inter-scenario compariosn
+        domestic_cod = 2025
+        scaled_deploy = [(perc/100)*deploy if cod > domestic_cod else deploy for perc, deploy, cod in zip(domestic_sc_percent, annual_deploy, cod_years)]
 
         if ind==1:
-            deploy_scenarios += [total_deploy, scaled_deploy]
-            legend += ['No constraints', v['legend']]
+            deploy_scenarios += [np.cumsum(annual_deploy) / 1000,
+                                 np.cumsum(scaled_deploy) / 1000]
+            legend += ['Deployment with no supply chain constraints', v['legend']]
             linetype += ['-', v['linetype']]
         else:
-            deploy_scenarios += [scaled_deploy]
+            deploy_scenarios += [np.cumsum(scaled_deploy) / 1000]
             legend += [v['legend']]
             linetype += [v['linetype']]
+
+        domestic_sc_percent_scenarios += [domestic_sc_percent]
+
         ind += 1
 
-    print(cod_years, deploy_scenarios)
-    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, fname='results/deployment_impact')
+    # Inter-scenario results and plots
+    lineplot_comp(mnf_years, domestic_sc_percent_scenarios, legend[1:], linetype[1:], xlabel='Manufacturing date', ylabel='Manufacturing capacity (% of demand)', fname='results/domestic_percent')
+    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, xlabel='Commercial operation date', ylabel='Installed capacity, GW', fname='results/deployment_impact')
