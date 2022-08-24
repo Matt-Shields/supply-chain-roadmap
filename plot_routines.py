@@ -381,9 +381,9 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
         mysave(fig, fname)
         plt.close()
 
-def lineplot_comp(x, y, ylabels, linetype, fname):
+def lineplot_comp(x, y, legend, linetype, fname):
     fig, ax = initFigAxis()
-    for y, l, t in zip(y, ylabels, linetype):
+    for y, l, t in zip(y, legend, linetype):
         ax.plot(x, y, t, label=l)
     ax.legend()
     if fname:
