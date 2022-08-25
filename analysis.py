@@ -5,7 +5,7 @@ import pandas as pd
 from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map
 from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt, lineplot_comp
 
-def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline, filepath_ports, filepath_deploy, components, indiv_announced, plot_dir):
+def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, components, indiv_announced, plot_dir):
     # Demand
     total_demand, years= read_pipeline(filepath_pipeline, cod_shift=2)
     _deploy = pd.read_csv(filepath_deploy)
@@ -14,7 +14,7 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
     total_deploy = _deploy['Cumulative deployment, MW']
 
     # Scenarios
-    indiv_scenario = read_future_scenarios(filepath_ports, 'Avg Demand Scenario', header=9)
+    all_factories = read_future_scenarios(filepath_ports, 'Avg Demand Scenario', header=9)
 
     announced = {}
     scenario = {}
@@ -35,20 +35,23 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
     # Instantiate individual factories for all components in t
     for c in components:
         # Known facilities
-        announced[c] = define_factories(filepath_announced,
-                                        indiv_announced,
-                                        c,
-                                        years,
-                                        generic=False, name_map = announced_name_map)
-        # Scenario facilities
-        scenario[c] = define_factories(filepath_scenarios,
-                                        indiv_scenario,
-                                        c,
-                                        years,
-                                        generic=True)
+        announced[c], scenario[c] = define_factories(all_factories, c, years, announced_name_map
+        )
+        # announced[c] = define_factories(filepath_announced,
+        #                                 indiv_announced,
+        #                                 c,
+        #                                 years,
+        #                                 generic=False, name_map = announced_name_map)
+        # # Scenario facilities
+        # scenario[c] = define_factories(filepath_scenarios,
+        #                                 indiv_scenario,
+        #                                 c,
+        #                                 years,
+        #                                 generic=True)
 
         announced_list += announced[c]
         scenario_list += scenario[c]
+
         # Construction Gantt charts
         fname_gantt = 'results/'+ plot_dir + '/' + c + '_gantt'
         plot_gantt(components, announced[c], scenario[c], color_list, single_component=True, fname=fname_gantt)
@@ -58,8 +61,8 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
         total_scenario_throughput[c] = sum_property(years, scenario[c], 'annual_throughput')
         total_announced_investment[c] = sum_property(years, announced[c], 'annual_investment')
         total_scenario_investment[c] = sum_property(years, scenario[c], 'annual_investment')
-        total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
-        total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
+        # total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
+        # total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
 
         # Compare with demand
         fname = 'results/'+ plot_dir + '/' + c + '_supply_demand'
@@ -94,6 +97,7 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
         annual_diff_pos[c] = plot_diff(years, y_diff, ylabel_diff, color_list, fname_diff)
         annual_diff[c] = y_prod / average[c]
         # annual_diff[c] = y_prod / total_demand[c]
+
         # Plot investment
         fname = 'results/'+ plot_dir + '/' + c + '_investment'
         y_investment = [total_announced_investment[c], total_scenario_investment[c] ]
@@ -103,20 +107,20 @@ def scenario_analysis(filepath_scenarios, filepath_announced, filepath_pipeline,
         ylabel = 'Cumulative investment ($ million)'
         plot_supply_demand(years, zip(y_throughput, color_investment, name_investment, hatch_investment), color_list, c, ylabel, fname=fname)
         #
-        # Plot jobs
-        fname = 'results/'+ plot_dir + '/' + c + '_jobs'
-        y_jobs = [total_announced_jobs[c], total_scenario_jobs[c] ]
-        color_jobs = [color_list['Announced'], color_list['Scenario']]
-        name_jobs = ['Announced','Additional required']
-        hatch_jobs = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
-        ylabel = 'Cumulative jobs, FTEs'
-        plot_supply_demand(years, zip(y_jobs, color_jobs, name_jobs, hatch_jobs), color_list, c, ylabel, fname=fname)
+        # # Plot jobs
+        # fname = 'results/'+ plot_dir + '/' + c + '_jobs'
+        # y_jobs = [total_announced_jobs[c], total_scenario_jobs[c] ]
+        # color_jobs = [color_list['Announced'], color_list['Scenario']]
+        # name_jobs = ['Announced','Additional required']
+        # hatch_jobs = [color_list['Announced_hatch'], color_list['Scenario_hatch'], None]
+        # ylabel = 'Cumulative jobs, FTEs'
+        # plot_supply_demand(years, zip(y_jobs, color_jobs, name_jobs, hatch_jobs), color_list, c, ylabel, fname=fname)
 
     plot_cumulative(years, total_announced_investment, total_scenario_investment, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
     #
-    plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
+    # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #
-    plot_num_facilities(components, indiv_announced, indiv_scenario, color_list, fname='results/num_facilities')
+    plot_num_facilities(components, announced, scenario, color_list, fname='results/num_facilities')
     #
     # Construction Gantt charts
     fname_gantt2 = 'results/' + plot_dir + '/overall_gantt'

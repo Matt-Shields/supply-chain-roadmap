@@ -142,7 +142,17 @@ def read_future_scenarios(file, sheet, header):
     df = pd.read_excel(file, sheet_name=sheet, header=header, keep_default_na=False)
     dict = {}
     for index, row in df.iterrows():
-        dict[row['Factory']] = [row['Operational date'], row['State'], row['Name']]
+        dict[row['Factory']] = {'Operational date': row['Operational date'],
+                                'State': row['State'],
+                                'Name': row['Name'],
+                                'Type': row['Type'],
+                                'Announcement date': row['Announcement date'],
+                                'Port cost': row['Port upgrade cost'],
+                                'Component': row['Component'],
+                                'Production capacity': row['Production capacity'],
+                                'Facility cost': row['Facility cost'],
+                                'Facility construction time': row['Facility construction (yrs)']
+                                }
     return dict
 
 def read_pipeline(file, cod_shift):
@@ -167,17 +177,25 @@ def read_pipeline(file, cod_shift):
     return dict, manf_date
 
 
-def define_factories(file, facility_list, component, years, generic, name_map=None):
+def define_factories(facility_list, component, years, name_map):
     """Instantiate Factory objects for each facility in pipeline"""
-    _factories = []
+    _announced_factories = []
+    _scenario_factories = []
     for fi in facility_list:
-        if component in fi:
-            if generic == False:
-                f = Factory(file, fi, years, generic, name_map=name_map)
+        if component in facility_list[fi]['Component']:
+            f = Factory(facility_list[fi], component, years, name_map)
+            if f.facility_type == 'Announced':
+                _announced_factories.append(f)
+            elif f.facility_type == 'Scenario':
+                _scenario_factories.append(f)
             else:
-                f = Factory(file, component, years, generic, facility_list[fi])
-            _factories.append(f)
-    return _factories
+                print('Unknown facility type in ports_scenario spreadsheet')
+    #         if generic == False:
+    #             f = Factory(file, fi, years, generic, name_map=name_map)
+    #         else:
+    #             f = Factory(file, component, years, generic, facility_list[fi])
+    #         _factories.append(f)
+    return _announced_factories, _scenario_factories
 
 def sum_property(years, factory_list, property):
     """Sum factory properties for Factory objects in a list"""

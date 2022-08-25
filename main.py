@@ -23,8 +23,6 @@ scenarios = {
 }
 
 # Common paramters
-filepath_scenarios = "library/Generic_facilities.xlsx"
-filepath_announced = "library/Announced_factories.xlsx"
 filepath_pipeline = "library/total_demand.csv"
 filepath_deploy = "library/total_deployment.csv"
 
@@ -54,8 +52,7 @@ if __name__ == "__main__":
     ind = 1
     for k, v in scenarios.items():
         # Individual scenario results and plots
-        mnf_years, cod_years, total_demand, domestic_sc_percent, total_deploy, annual_deploy = sa(filepath_scenarios,
-                filepath_announced,
+        mnf_years, cod_years, total_demand, domestic_sc_percent, total_deploy, annual_deploy = sa(
                 filepath_pipeline,
                 v['filepath_ports'],
                 filepath_deploy,

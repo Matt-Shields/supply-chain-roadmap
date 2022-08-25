@@ -273,7 +273,7 @@ def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alter
 
 def plot_num_facilities(components, y1, y2, color_list, fname=None):
     """Plot the total number of required facilities per component"""
-
+    
     announced = {}
     scenario = {}
     bar_color = []
