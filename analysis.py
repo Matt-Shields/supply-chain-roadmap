@@ -37,17 +37,6 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         # Known facilities
         announced[c], scenario[c] = define_factories(all_factories, c, years, announced_name_map
         )
-        # announced[c] = define_factories(filepath_announced,
-        #                                 indiv_announced,
-        #                                 c,
-        #                                 years,
-        #                                 generic=False, name_map = announced_name_map)
-        # # Scenario facilities
-        # scenario[c] = define_factories(filepath_scenarios,
-        #                                 indiv_scenario,
-        #                                 c,
-        #                                 years,
-        #                                 generic=True)
 
         announced_list += announced[c]
         scenario_list += scenario[c]
@@ -61,10 +50,6 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         total_scenario_throughput[c] = sum_property(years, scenario[c], 'annual_throughput')
         total_announced_investment[c] = sum_property(years, announced[c], 'annual_investment')
         total_scenario_investment[c] = sum_property(years, scenario[c], 'annual_investment')
-        # total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
-        # total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
-
-
 
         # Compare with demand
         fname = 'results/'+ plot_dir + '/' + c + '_supply_demand'
@@ -118,7 +103,11 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         # ylabel = 'Cumulative jobs, FTEs'
         # plot_supply_demand(years, zip(y_jobs, color_jobs, name_jobs, hatch_jobs), color_list, c, ylabel, fname=fname)
 
-    plot_cumulative(years, total_announced_investment, total_scenario_investment, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
+    ### total_announced_investment = arrays
+    ### announced = dict
+    total_ports = np.multiply(np.ones(len(years)), 1000)
+
+    plot_cumulative(years, total_announced_investment, total_scenario_investment, total_ports, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
     #
     # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #

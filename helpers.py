@@ -56,19 +56,6 @@ ymax_plots = {'Monopile': 350,
 }
 
 color_list = {
-    # 'Monopile': '#303CAA',
-    # 'Jacket': '#717ACC',
-    # 'Semisubmersible': '#0F1872',
-    # 'Blade': '#F6A92A',
-    # 'Nacelle': '#FFCE7C',
-    # 'Tower': '#A56700',
-    # 'Transition piece': '#717ACC' ,
-    # 'Array cable': '#1B9D84',
-    # 'Export cable': '#5FC3B0',
-    # 'Announced': '#ECB400',
-    # 'Scenario': '#B78B00',
-    # 'WTIV': '#688CD3',
-    # 'Steel plate': 'b',
     # Color scheme for components: https://paletton.com/#uid=70m0P1kuovZh9G7nlz8xWp1E7j0kHlz6lxHTsYGtJjpEN5j5kLGs1q7F9IcGrO+m8T6fxkmuEKatTJhdM3rQzhvZqJ
     'Monopile': '#FF670D',
     'Jacket': '#C74A00',
@@ -190,18 +177,12 @@ def define_factories(facility_list, component, years, name_map):
                 _scenario_factories.append(f)
             else:
                 print('Unknown facility type in ports_scenario spreadsheet')
-    #         if generic == False:
-    #             f = Factory(file, fi, years, generic, name_map=name_map)
-    #         else:
-    #             f = Factory(file, component, years, generic, facility_list[fi])
-    #         _factories.append(f)
     return _announced_factories, _scenario_factories
 
 def sum_property(years, factory_list, property):
     """Sum factory properties for Factory objects in a list"""
     _total = [0] * len(years)
     for f in factory_list:
-        # print(_total, getattr(f,property))
         _total = np.array([sum(x) for x in zip(_total, getattr(f, property))])
     return _total
 

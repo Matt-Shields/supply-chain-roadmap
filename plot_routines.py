@@ -220,7 +220,7 @@ def plot_total_diff(x, y, demand, fname):
 
     return total_percent
 
-def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alternate_breakdown=None):
+def plot_cumulative(x, y1, y2, y3, components, color_list, ylabel, fname=None, alternate_breakdown=None):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
 
@@ -230,6 +230,8 @@ def plot_cumulative(x, y1, y2, components, color_list, ylabel, fname=None, alter
         ax.plot(x, yPlot, 'k')
         ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
         yBase = yPlot
+
+    ax.fill_between(x, list(yBase), list(yBase + y3), color='b', label='Ports')
 
     ax.set_xlabel('Manufacturing date')
     ax.set_ylabel(ylabel)
