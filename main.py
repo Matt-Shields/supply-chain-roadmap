@@ -10,12 +10,12 @@ from analysis import scenario_analysis as sa
 from plot_routines import lineplot_comp
 
 scenarios = {
-'Early': {
+'Accelerated': {
 'filepath_ports': "fabrication_ports/ports_scenario_min.xlsx",
 'legend': 'Accelerated domestic supply chain growth',
 'linetype': '--'
 },
-'Late': {
+'Conservative': {
 'filepath_ports': "fabrication_ports/ports_scenario_max.xlsx",
 'legend': 'Conservative domestic supply chain growth',
 'linetype': '.-'
