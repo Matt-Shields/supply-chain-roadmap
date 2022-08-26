@@ -64,6 +64,8 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         # total_announced_jobs[c] = sum_property(years, announced[c], 'annual_jobs')
         # total_scenario_jobs[c] = sum_property(years, scenario[c], 'annual_jobs')
 
+
+
         # Compare with demand
         fname = 'results/'+ plot_dir + '/' + c + '_supply_demand'
         y_throughput = [total_announced_throughput[c], total_scenario_throughput[c] ]
