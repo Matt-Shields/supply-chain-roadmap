@@ -11,7 +11,7 @@ import pandas as pd
 # Standard inputs
 port_time = 3
 port_overlap_time = 0.25
-learning_curve = {0: 0.5, 1: 0.75}
+utilization = {0: 0.75, 1:1}
 
 class Factory():
     """ Define factory class """
@@ -43,7 +43,7 @@ class Factory():
         self.annual_throughput[_ind:] = self.throughput
 
         # Correct for learning curve in early years
-        for yr,perc in learning_curve.items():
+        for yr,perc in utilization.items():
             _yr_ind = _ind + yr
             try:
                 self.annual_throughput[_yr_ind] = perc * self.throughput

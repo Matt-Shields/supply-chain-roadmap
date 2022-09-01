@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map
+from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map, ports_inv, vessel_inv
 from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt, lineplot_comp
 
 def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, components, indiv_announced, plot_dir):
@@ -32,6 +32,8 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
     total_scenario_investment = {}
     total_announced_jobs = {}
     total_scenario_jobs = {}
+    total_announced_fab_port_investment = {}
+    total_scenario_fab_port_investment = {}
     # Instantiate individual factories for all components in t
     for c in components:
         # Known facilities
@@ -50,6 +52,8 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         total_scenario_throughput[c] = sum_property(years, scenario[c], 'annual_throughput')
         total_announced_investment[c] = sum_property(years, announced[c], 'annual_investment')
         total_scenario_investment[c] = sum_property(years, scenario[c], 'annual_investment')
+        total_announced_fab_port_investment[c] = sum_property(years, announced[c], 'annual_fab_port_investment')
+        total_scenario_fab_port_investment[c] = sum_property(years, scenario[c], 'annual_fab_port_investment')
 
         # Compare with demand
         fname = 'results/'+ plot_dir + '/' + c + '_supply_demand'
@@ -105,9 +109,15 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
 
     ### total_announced_investment = arrays
     ### announced = dict
-    total_ports = np.multiply(np.ones(len(years)), 1000)
+    fab_port_inv = [0] * len(years)
+    for c in components:
+            _a = total_announced_fab_port_investment[c]
+            _s = total_scenario_fab_port_investment[c]
+            fab_port_inv = np.array([sum(x) for x in zip(_a, _s, fab_port_inv)])
+    total_ports = np.add(ports_inv, fab_port_inv)
+    total_vessels = vessel_inv
 
-    plot_cumulative(years, total_announced_investment, total_scenario_investment, total_ports, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
+    plot_cumulative(years, total_announced_investment, total_scenario_investment, total_ports, total_vessels, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment')
     #
     # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #
