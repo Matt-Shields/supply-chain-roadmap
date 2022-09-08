@@ -12,12 +12,12 @@ from plot_routines import lineplot_comp
 scenarios = {
 'Accelerated': {
 'filepath_ports': "fabrication_ports/ports_scenario_min.xlsx",
-'legend': 'Accelerated domestic supply chain growth',
+'legend': 'Accelerated supply chain growth',
 'linetype': '--'
 },
 'Conservative': {
 'filepath_ports': "fabrication_ports/ports_scenario_max.xlsx",
-'legend': 'Conservative domestic supply chain growth',
+'legend': 'Conservative supply chain growth',
 'linetype': '.-'
 }
 }
@@ -79,5 +79,5 @@ if __name__ == "__main__":
         ind += 1
 
     # Inter-scenario results and plots
-    lineplot_comp(mnf_years, domestic_sc_percent_scenarios, legend[1:], linetype[1:], xlabel='Manufacturing date', ylabel='Manufacturing capacity (% of demand)', fname='results/domestic_percent')
-    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, xlabel='Commercial operation date', ylabel='Installed capacity, GW', fname='results/deployment_impact')
+    lineplot_comp(mnf_years, domestic_sc_percent_scenarios, legend[1:], linetype[1:], xlabel='Manufacturing date', ylabel='Manufacturing capacity (% of demand)', xlim = [2020, 2034], ylim = [0, 110], fname='results/domestic_percent')
+    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, xlabel='Commercial operation date', ylabel='Installed capacity, GW', xlim = [2022, 2036], ylim = [0, 70], fname='results/deployment_impact')

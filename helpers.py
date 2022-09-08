@@ -37,7 +37,7 @@ job_breakdown = {'Design and engineering': .03,
 
 # Copy vessel/port investment schedule from CORAL/investment_schedule.CSV
 # TODO: make this dynamic
-ports_inv = np.cumsum([720, 0, 0, 0, 0, 387, 0, 260, 200, 400, 0, 0, 0, 0])
+ports_inv = np.cumsum([770, 0, 0, 0, 0, 387, 0, 260, 200, 400, 0, 0, 0, 0])
 vessel_inv = np.cumsum([0, 500, 0, 0, 0, 500, 500, 1500, 1000, 0, 0, 0, 0, 0])
 
 
@@ -49,8 +49,8 @@ ymax_plots = {'Monopile': 350,
     'Nacelle': 800,
     'Tower': 600,
     'Transition piece': 350 ,
-    'Array cable': 3500,
-    'Export cable': 1800,
+    'Array cable': 2000,
+    'Export cable': 2000,
     'WTIV': 6,
     'Steel plate': 1200000,
     'Casting': 700,
