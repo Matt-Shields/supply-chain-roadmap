@@ -220,7 +220,7 @@ def plot_total_diff(x, y, demand, fname):
 
     return total_percent
 
-def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=None, alternate_breakdown=None):
+def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=None, alternate_breakdown=None, ymax=None):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
 
@@ -239,6 +239,12 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     yVessels = yPorts + y4
     ax.fill_between(x, list(yPorts), list(yVessels), color='g', label='WTIVs and HLVs')
     ax.plot(x, yVessels, 'k')
+
+    total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
+    print('Cumulative supply chain investment is: ', total_inv)
+
+    if ymax is not None:
+        ax.set_ylim([0,ymax])
 
     ax.set_xlabel('Manufacturing date')
     ax.set_ylabel(ylabel)
