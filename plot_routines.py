@@ -400,8 +400,16 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
 
 def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname):
     fig, ax = initFigAxis()
+
+    # Write data out
+    _df_out = pd.DataFrame({
+        'Year': x
+    })
+
     for y, l, t in zip(y, legend, linetype):
         ax.plot(x, y, t, label=l)
+        _df_out[l] = y
+    print(_df_out)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_ylim(ylim)
