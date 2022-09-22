@@ -420,3 +420,16 @@ def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def simple_bar(x, y, yticks, xlabel=None, ylabel=None, fname=None):
+    fig, ax = initFigAxis()
+
+    ax.bar(x, y)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_yticks(yticks)
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
