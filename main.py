@@ -15,11 +15,11 @@ scenarios = {
 'legend': 'Accelerated supply chain growth',
 'linetype': '--'
 },
-# 'Conservative': {
-# 'filepath_ports': "fabrication_ports/ports_scenario_max.xlsx",
-# 'legend': 'Conservative supply chain growth',
-# 'linetype': '.-'
-# },
+'Conservative': {
+'filepath_ports': "fabrication_ports/ports_scenario_max.xlsx",
+'legend': 'Conservative supply chain growth',
+'linetype': '.-'
+},
 # 'Aggressive': {
 # 'filepath_ports': "fabrication_ports/ports_scenario_aggressive.xlsx",
 # 'legend': 'Aggressive supply chain growth',

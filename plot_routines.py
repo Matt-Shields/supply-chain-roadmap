@@ -37,17 +37,18 @@ def mysave(fig, froot, mode='png'):
 titleSize = 24  # 40 #38
 axLabelSize = 20  # 38 #36
 tickLabelSize = 18  # 30 #28
+ganttTick = 18
 legendSize = tickLabelSize + 2
 textSize = legendSize - 2
 deltaShow = 4
 linewidth = 3
 
 
-def myformat(ax, linewidth=linewidth, yticklabel=tickLabelSize, mode='save'):
+def myformat(ax, linewidth=linewidth, xticklabel=tickLabelSize, yticklabel=tickLabelSize, mode='save'):
     assert type(mode) == type('')
     assert mode.lower() in ['save', 'show'], 'Unknown mode'
 
-    def myformat(myax, linewidth=linewidth, yticklabel=yticklabel):
+    def myformat(myax, linewidth=linewidth, xticklabel=xticklabel, yticklabel=yticklabel):
         if mode.lower() == 'show':
             for i in myax.get_children():  # Gets EVERYTHING!
                 if isinstance(i, txt.Text):
@@ -104,11 +105,11 @@ def myformat(ax, linewidth=linewidth, yticklabel=tickLabelSize, mode='save'):
             myax.tick_params(labelsize=tickLabelSize)
             myax.patch.set_linewidth(3)
             for i in myax.get_xticklabels():
-                i.set_size(tickLabelSize)
+                i.set_size(xticklabel)
             for i in myax.get_xticklines():
                 i.set_linewidth(3)
             for i in myax.get_yticklabels():
-                i.set_size(tickLabelSize)
+                i.set_size(yticklabel)
             for i in myax.get_yticklines():
                 i.set_linewidth(3)
 
@@ -117,8 +118,8 @@ def myformat(ax, linewidth=linewidth, yticklabel=tickLabelSize, mode='save'):
     else:
         myformat(ax)
 
-def initFigAxis():
-    fig = plt.figure(figsize=(12, 9))
+def initFigAxis(figx=12, figy=9):
+    fig = plt.figure(figsize=(figx, figy))
     ax = fig.add_subplot(111)
     return fig, ax
 
@@ -384,15 +385,16 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
     sort_color = [color[i] for i in start_ind]
 
     # Make horizontal bar (Gantt)charts
-    fig, ax = initFigAxis()
+    fig, ax = initFigAxis(figy=12)
     bar_height = 0.4
     ax.barh(sort_names[::-1], width=sort_duration[::-1], height=bar_height, left=sort_start[::-1], color=sort_color[::-1])
-    ax.tick_params(axis='y', which='major', labelsize=5)
-    ax.grid()
+    ax.set_xticks(list(np.arange(2018, 2033+1, 1)))
+    ax.set_xticklabels(ax.get_xticks(), rotation=45)
+    ax.grid(alpha=0.5)
 
     if fname:
         if single_component == False:
-            myformat(ax, yticklabel=5)
+            myformat(ax, xticklabel=ganttTick, yticklabel=ganttTick)
         else:
             myformat(ax)
         mysave(fig, fname)
@@ -430,6 +432,6 @@ def simple_bar(x, y, yticks, xlabel=None, ylabel=None, fname=None):
     ax.set_yticks(yticks)
 
     if fname:
-        myformat(ax, yticklabel=5)
+        myformat(ax)
         mysave(fig, fname)
         plt.close()

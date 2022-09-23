@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 from plot_routines import stacked_bar_2ser, simple_bar
 
-dir_ind_jobs = True
-state_facilities = True
+dir_ind_jobs = False
 
 if __name__ == '__main__':
     ##### Gaps assessment slide deck
@@ -24,21 +23,3 @@ if __name__ == '__main__':
         ymax=100
 
         stacked_bar_2ser(component, direct, indirect, dir_col, indir_col, n1, n2, ylabel, fname, ymax)
-
-
-    # if state_facilities == True:
-    #     filepath = 'C:/Users/mshields/Documents/Projects/Supply Chain Roadmap/Analysis repos/Roadmap/fabrication_ports/ports_scenario_max.xlsx'
-    #     scenario = pd.read_excel(filepath, header=9, usecols='A:P')
-    #     state_ports = pd.pivot_table(scenario, index='State', values='Factory', aggfunc=len)
-    #     states = np.array(state_ports.index)
-    #     factories = np.array(state_ports['Factory'])
-    #
-    #     factory_ind = np.argsort(factories)
-    #     sort_states = [states[i] for i in factory_ind[::-1]]
-    #     sort_factories = [factories[i] for i in factory_ind[::-1]]
-    #
-    #     yticks = np.arange(0,max(factories)+1,1)
-    #     ylabel = 'Number of factories'
-    #     fname = 'results/state_factories'
-    #
-    #     simple_bar(sort_states, sort_factories, yticks, ylabel=ylabel, fname=fname)
