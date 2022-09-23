@@ -47,7 +47,7 @@ def myformat(ax, linewidth=linewidth, yticklabel=tickLabelSize, mode='save'):
     assert type(mode) == type('')
     assert mode.lower() in ['save', 'show'], 'Unknown mode'
 
-    def myformat(myax, linewidth=linewidth, yticklabel=tickLabelSize,):
+    def myformat(myax, linewidth=linewidth, yticklabel=yticklabel):
         if mode.lower() == 'show':
             for i in myax.get_children():  # Gets EVERYTHING!
                 if isinstance(i, txt.Text):
@@ -430,6 +430,6 @@ def simple_bar(x, y, yticks, xlabel=None, ylabel=None, fname=None):
     ax.set_yticks(yticks)
 
     if fname:
-        myformat(ax)
+        myformat(ax, yticklabel=5)
         mysave(fig, fname)
         plt.close()

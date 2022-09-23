@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from helpers import read_future_scenarios, read_pipeline, define_factories, sum_property, compute_utilization, color_list, job_breakdown, ymax_plots, label_map, announced_name_map, ports_inv, vessel_inv
-from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt, lineplot_comp
+from plot_routines import plot_supply_demand, plot_diff, plot_total_diff,  plot_cumulative, plot_num_facilities, plot_gantt, lineplot_comp, simple_bar
 
 def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, components, indiv_announced, plot_dir):
     # Demand
@@ -122,15 +122,30 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
     # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #
     plot_num_facilities(components, announced, scenario, color_list, fname='results/num_facilities')
-    #
+
     # Construction Gantt charts
     fname_gantt2 = 'results/' + plot_dir + '/overall_gantt'
     plot_gantt(components, announced_list, scenario_list, color_list, fname=fname_gantt2)
-    # # plot_job_breakdown()
-    #
+
     # Overall difference in component_list
     fname_total_diff = 'results/' + plot_dir + '/total_diff'
     domestic_sc_percent = plot_total_diff(years, annual_diff, total_demand, fname_total_diff)
+
+    # Number of facilities per state
+    state_fac_scenario = pd.read_excel(filepath_ports, header=9, usecols='A:P')
+    state_ports = pd.pivot_table(state_fac_scenario, index='State', values='Factory', aggfunc=len)
+    states = np.array(state_ports.index)
+    factories = np.array(state_ports['Factory'])
+
+    factory_ind = np.argsort(factories)
+    sort_states = [states[i] for i in factory_ind[::-1]]
+    sort_factories = [factories[i] for i in factory_ind[::-1]]
+
+    yticks = np.arange(0,max(factories)+1,1)
+    ylabel_nfac = 'Number of factories'
+    fname_state_fac = 'results/state_factories'
+
+    simple_bar(sort_states, sort_factories, yticks, ylabel=ylabel_nfac, fname=fname_state_fac)
 
     return years, cod_years, total_demand, domestic_sc_percent, total_deploy, annual_deploy
     #
