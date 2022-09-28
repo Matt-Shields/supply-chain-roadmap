@@ -461,6 +461,32 @@ def pie_plot(y, c, n, fname=None):
     # handles, labels = ax.get_legend_handles_labels()
     # ax.legend(handles=handles[::-1],
     #            labels=labels[::-1])
+
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+def area_bar_chart(x, y1, y2, l, kwargs, fname=None):
+    fig, ax = initFigAxis()
+
+    # Area plot
+    y0 = np.zeros(len(x))
+    ax.fill_between(x, list(y0), y1, color=kwargs['color1'], label=l[0], zorder=kwargs['zorder1'])
+    ax.plot(x,y1, 'k', zorder=kwargs['zorder1'])
+
+    # Bar plot
+    ax.bar(x, y2, width=kwargs['bar_width'], color=kwargs['color2'], label=l[1], zorder=kwargs['zorder2'])
+
+    ax.set_xlabel(kwargs['xlabel'])
+    ax.set_ylabel(kwargs['ylabel'])
+    ax.set_xlim(x[0], x[-1]+1)
+    ax.set_ylim(kwargs['ylim'])
+    ax.legend(loc='upper left')
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
     if fname:
         myformat(ax)
         mysave(fig, fname)

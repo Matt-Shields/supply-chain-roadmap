@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart
 from helpers import color_list
 
 
@@ -33,6 +33,7 @@ if __name__ == '__main__':
         workforce_plot_list = {
             'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
             'Figure 16 (top)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
+            'Figure 16 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
         }
 
         for fig, data in workforce_plot_list.items():
@@ -46,3 +47,29 @@ if __name__ == '__main__':
                 colors = [color_list[n] for n in names]
                 fname = 'results/workforce/worker_breakdown'
                 pie_plot(values, colors, names, fname)
+
+            elif "Figure 16" in fig:
+                years = _df.columns.values
+                direct = _df.loc['Component (Direct Jobs)',:].values
+                indirect = _df.loc['Suppliers (Indirect Jobs, 100% Domestic Content)',:].values
+                label = ['Component (Direct jobs)', 'Suppliers (Indirect jobs, 100% domestic content)']
+
+                kwargs = {'bar_width': 0.5,
+                            'zorder1': 0,
+                            'zorder2': 1,
+                            'color1': color_list[label[0]],
+                            'color2': color_list[label[1]],
+                            'ylim': [0, 60000],
+                            'ylabel': 'Potential Job Opportunities, FTEs',
+                            'xlabel': 'Manufacturing date'
+                            }
+
+                # Different names and directories for accelerated and conservative scenarios
+                if "top" in fig:
+                    fname = 'results/Accelerated/workforce_rampup'
+                elif "bottom" in fig:
+                    fname = 'results/Conservative/workforce_rampup'
+                area_bar_chart(years, direct, indirect, label, kwargs, fname)
+
+            else:
+                print("Figure type not identified")

@@ -91,6 +91,9 @@ color_list = {
     'Factory-Level Management': '#E3B521',
     'Factory-Level Worker': '#FFE699',
     'Facilities Maintenance': '#9C7700',
+    # Other Jobs color
+    'Component (Direct jobs)': '#FF8500',
+    'Suppliers (Indirect jobs, 100% domestic content)': '#055B7C',
     #
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '...'
