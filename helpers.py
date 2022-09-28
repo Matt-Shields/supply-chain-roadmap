@@ -69,6 +69,9 @@ color_list = {
     'Semisubmersible': '#FF8518',
     'Mooring chain': 'k',
     'Mooring rope': 'k',
+    'Mooring Chain': 'k',
+    'Mooring Rope': 'k',
+    'Mooring System': 'k',
     'Anchor': 'k',
     'Blade': '#698FE8',
     'Nacelle': '#7679DB',
@@ -78,6 +81,7 @@ color_list = {
     'Export cable': '#00AE83',
     'WTIV': '#B08300',
     'Steel plate': '#FFBE00',
+    'Steel plates':  '#FFBE00',
     'Flange': 'k',
     'Casting': 'k',
     # Color schem for announced/scneario:

@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs
 from helpers import color_list
 
 
@@ -34,10 +34,14 @@ if __name__ == '__main__':
             'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
             'Figure 16 (top)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
             'Figure 16 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
+            'Figure B1 (top)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
+            'Figure B1 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
+            'Figure B2 (top)': {'header': 7, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 14},
+            'Figure B2 (bottom)': {'header': 6, 'index_col': 0, 'usecols': 'B:R', 'nrows': 14},
+
         }
 
         for fig, data in workforce_plot_list.items():
-            # print(fig, df)
             _df = pd.read_excel(wf_filepath, sheet_name=fig, header=data['header'], index_col=data['index_col'],    usecols=data['usecols'], nrows=data['nrows'])
 
             # Extract data and call plot routines
@@ -70,6 +74,28 @@ if __name__ == '__main__':
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
                 area_bar_chart(years, direct, indirect, label, kwargs, fname)
+
+            elif "B1" in fig or "B2" in fig:
+                years = _df.columns.values
+                components = _df.index.values
+
+                kwargs = {'xlabel': 'Manufacturing date',
+                            'ylabel': 'Potential Job Opportunities, FTEs',
+                            'ylim': [0, 60000],
+                        }
+                if "top" in fig:
+                    if "B1" in fig:
+                        fname = 'results/Accelerated/direct_workforce_rampup'
+                    elif "B2" in fig:
+                        fname = 'results/Accelerated/indirect_workforce_rampup'
+                elif "bottom" in fig:
+                    if "B1" in fig:
+                        fname = 'results/Conservative/direct_workforce_rampup'
+                    elif "B2" in fig:
+                        fname = 'results/Conservative/indirect_workforce_rampup'
+
+                plot_cumulative_jobs(years, _df, components, color_list, kwargs, fname)
+
 
             else:
                 print("Figure type not identified")

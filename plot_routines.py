@@ -491,3 +491,29 @@ def area_bar_chart(x, y1, y2, l, kwargs, fname=None):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def plot_cumulative_jobs(x, y, components, color_list, kwargs, fname=None):
+    """ PLot the cumulative jobs in the overall supply chain"""
+    fig, ax = initFigAxis()
+
+    yBase = np.zeros(len(x))
+    for c in components:
+        yPlot = y.loc[c,:].values + yBase
+        ax.plot(x, yPlot, 'k')
+        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
+        yBase = yPlot
+
+    ax.set_xlabel(kwargs['xlabel'])
+    ax.set_ylabel(kwargs['ylabel'])
+    ax.set_ylim(kwargs['ylim'])
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], loc='upper left')
+    # ax.legend(loc='upper left')
+
+    if fname is not None:
+        myformat(ax, linewidth=2)
+        mysave(fig, fname)
+        plt.close()
