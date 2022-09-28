@@ -517,3 +517,22 @@ def plot_cumulative_jobs(x, y, components, color_list, kwargs, fname=None):
         myformat(ax, linewidth=2)
         mysave(fig, fname)
         plt.close()
+
+def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
+    """y1 and y2 are side-by-side vertical bars; y3 is a vertical bar overlapping these two"""
+
+    fig, ax = initFigAxis(figx=30)
+
+    ax.bar(x, y1, width=-kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][0], edgecolor='k', color=color_list[kwargs['legend'][0]])
+    ax.bar(x, y2, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][1], edgecolor='k', color=color_list[kwargs['legend'][1]])
+    ax.bar(x, y3, width=kwargs['front_bar_width'], alpha=0.75, zorder=kwargs['front_bar_zorder'], label=kwargs['legend'][2], edgecolor='k', color=color_list[kwargs['legend'][2]])
+
+    # ax.set_xticks(ax.get_xticks(), rotation=45)
+    ax.legend()
+    frame = plt.gca()
+    frame.axes.get_yaxis().set_visible(False)
+
+    if fname is not None:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()

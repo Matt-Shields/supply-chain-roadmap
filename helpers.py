@@ -98,6 +98,9 @@ color_list = {
     # Other Jobs color
     'Component (Direct jobs)': '#FF8500',
     'Suppliers (Indirect jobs, 100% domestic content)': '#055B7C',
+    'Similar industries capacity': '#70AD47',
+    'Proximity to conceptual facilities': '#FFC000',
+    'Offshore specific capability ': '#5B9BD5',
     #
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '...'

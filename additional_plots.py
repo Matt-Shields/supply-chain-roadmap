@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar
 from helpers import color_list
 
 
@@ -34,6 +34,8 @@ if __name__ == '__main__':
             'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
             'Figure 16 (top)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
             'Figure 16 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
+            'Figure 20': {'header': 3, 'index_col': 0, 'usecols': 'A:D', 'nrows': 50},
+            'Figure 21': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
             'Figure B1 (top)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
             'Figure B1 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
             'Figure B2 (top)': {'header': 7, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 14},
@@ -74,6 +76,26 @@ if __name__ == '__main__':
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
                 area_bar_chart(years, direct, indirect, label, kwargs, fname)
+            elif "Figure 20" in fig:
+                states = _df.index.values
+
+                label = ['Similar industries capacity',
+                            'Proximity to conceptual facilities',
+                            'Offshore specific capability ']
+
+                y1 = _df.loc[:, label[0]].values
+                y2 = _df.loc[:, label[1]].values
+                y3 = _df.loc[:, label[2]].values
+
+                kwargs = {'back_bar_width': 0.33,
+                            'front_bar_width': 0.5,
+                            'back_bar_zorder': 0,
+                            'front_bar_zorder': 1,
+                            'legend': label
+                            }
+                fname = 'results/workforce/state_scoring'
+
+                plot_overlap_bar(states, y1, y2, y3, color_list, kwargs, fname)
 
             elif "B1" in fig or "B2" in fig:
                 years = _df.columns.values
