@@ -86,11 +86,11 @@ color_list = {
     'Deficit': '#801515',
     'Surplus': 'k',
     # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159
-    'Design and engineering': '#29086B',
-    'Quality and safety': '#8D76B9',
-    'Factory-level management': '#E3B521',
-    'Factory-level worker': '#FFE699',
-    'Facilities maintenance': '#9C7700',
+    'Design and Engineering': '#29086B',
+    'Quality and Safety': '#8D76B9',
+    'Factory-Level Management': '#E3B521',
+    'Factory-Level Worker': '#FFE699',
+    'Facilities Maintenance': '#9C7700',
     #
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '...'

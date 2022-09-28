@@ -435,3 +435,33 @@ def simple_bar(x, y, yticks, xlabel=None, ylabel=None, fname=None):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def pie_plot(y, c, n, fname=None):
+    fig, ax = initFigAxis()
+
+    y_pie = y / np.sum(y)
+    _dict = {}
+    _c_dict={}
+    for name, val, col in zip(n, y_pie, c):
+        _val = np.round(100*val, 1)
+        _leg = (name + ' (' + str(_val) + '%)')
+        _dict[_leg] = _val
+        _c_dict[col] = _val
+
+    sort_dict = {k: v for k, v in sorted(_dict.items(), key=lambda item: item[1])}
+    sort_c_dict = {k: v for k, v in sorted(_c_dict.items(), key=lambda item: item[1])}
+
+    wedges, texts = ax.pie(sort_dict.values(), colors=sort_c_dict.keys())
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    ax.legend(wedges[::-1], list(sort_dict.keys())[::-1],
+              loc='center left',
+              bbox_to_anchor=(0.9, 0, 0.5, 1))
+
+    # handles, labels = ax.get_legend_handles_labels()
+    # ax.legend(handles=handles[::-1],
+    #            labels=labels[::-1])
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()

@@ -1,8 +1,11 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot
+from helpers import color_list
+
 
 dir_ind_jobs = False
+workforce_plots = True
 
 if __name__ == '__main__':
     ##### Gaps assessment slide deck
@@ -23,3 +26,23 @@ if __name__ == '__main__':
         ymax=100
 
         stacked_bar_2ser(component, direct, indirect, dir_col, indir_col, n1, n2, ylabel, fname, ymax)
+
+    if workforce_plots == True:
+        wf_filepath = 'workforce_plot_data/SC Report WF Charts_All.xlsx'
+
+        workforce_plot_list = {
+            'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
+            'Figure 16 (top)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
+        }
+
+        for fig, data in workforce_plot_list.items():
+            # print(fig, df)
+            _df = pd.read_excel(wf_filepath, sheet_name=fig, header=data['header'], index_col=data['index_col'],    usecols=data['usecols'], nrows=data['nrows'])
+
+            # Extract data and call plot routines
+            if fig == 'Figure 5':
+                names = _df.index.values
+                values = _df.iloc[:,0].values
+                colors = [color_list[n] for n in names]
+                fname = 'results/workforce/worker_breakdown'
+                pie_plot(values, colors, names, fname)
