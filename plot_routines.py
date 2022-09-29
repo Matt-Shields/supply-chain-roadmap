@@ -536,3 +536,26 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def plot_multi_bars(x, y1, y2_bottom, y2_height, color_list, kwargs, fname=None):
+    """y1 is a bar starting at the x axis, y2 is a range bar above"""
+
+    fig, ax = initFigAxis(figx=kwargs['figx'])
+
+    ind_label = 'Range of indirect job potential'
+
+    ax.bar(x, y1, width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
+    ax.bar(x, y2_height, width=kwargs['width'], bottom=y2_bottom, label=ind_label, color=color_list[kwargs['legend'][1]], edgecolor='k')
+
+    # ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+    ax.set_xticklabels(x, rotation=kwargs['rotation'])
+    ax.set_ylabel(kwargs['ylabel'])
+    ax.set_ylim(kwargs['ylim'])
+    ax.legend(loc='upper left')
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+    if fname is not None:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()

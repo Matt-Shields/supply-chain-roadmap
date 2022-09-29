@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_bars
 from helpers import color_list
 
 
@@ -35,12 +35,12 @@ if __name__ == '__main__':
             'Figure 16 (top)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
             'Figure 16 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
             'Figure 20': {'header': 3, 'index_col': 0, 'usecols': 'A:D', 'nrows': 50},
-            'Figure 21': {'header': 5, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 3},
+            'Figure 21': {'header': 3, 'index_col': 0, 'usecols': 'A:AY', 'nrows': 4},
             'Figure B1 (top)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
             'Figure B1 (bottom)': {'header': 5, 'index_col': 0, 'usecols': 'B:R', 'nrows': 15},
             'Figure B2 (top)': {'header': 7, 'index_col': 0, 'usecols': 'A:Q', 'nrows': 14},
             'Figure B2 (bottom)': {'header': 6, 'index_col': 0, 'usecols': 'B:R', 'nrows': 14},
-
+            'Figure B3': {'header': 5, 'index_col': 0, 'usecols': 'A:Y', 'nrows': 4},
         }
 
         for fig, data in workforce_plot_list.items():
@@ -96,6 +96,32 @@ if __name__ == '__main__':
                 fname = 'results/workforce/state_scoring'
 
                 plot_overlap_bar(states, y1, y2, y3, color_list, kwargs, fname)
+            elif "Figure 21" in fig or "Figure B3" in fig:
+
+                states = _df.columns.values
+                y1 = _df.iloc[2,:].values
+                y2_bottom = _df.iloc[0,:].values
+                y2_top = _df.iloc[1,:].values
+
+                y2_height = [t-b for b,t in zip(y2_bottom, y2_top)]
+
+                kwargs = {'width': 0.4,
+                            'legend': ['Direct jobs', 'Indirect jobs'],
+                            'ylabel': 'FTEs',
+                }
+
+                if "21" in fig:
+                    fname = 'results/state_job_opportunity'
+                    kwargs['ylim'] = [0,50000]
+                    kwargs['figx'] = 25
+                    kwargs['rotation'] = 45
+                elif 'B3' in fig:
+                    fname = 'results/NC_job_opportunity'
+                    kwargs['ylim'] = [0,14000]
+                    kwargs['figx'] = 12
+                    kwargs['rotation'] = 90
+
+                plot_multi_bars(states, y1, y2_bottom, y2_height, color_list, kwargs, fname)
 
             elif "B1" in fig or "B2" in fig:
                 years = _df.columns.values
@@ -117,7 +143,6 @@ if __name__ == '__main__':
                         fname = 'results/Conservative/indirect_workforce_rampup'
 
                 plot_cumulative_jobs(years, _df, components, color_list, kwargs, fname)
-
 
             else:
                 print("Figure type not identified")
