@@ -121,7 +121,7 @@ if __name__ == '__main__':
                     kwargs['figx'] = 12
                     kwargs['rotation'] = 90
 
-                plot_multi_bars(states, y1, y2_bottom, y2_height, color_list, kwargs, fname)
+                plot_multi_bars(states, y1, y2_top, y2_bottom, y2_height, color_list, kwargs, fname)
 
             elif "B1" in fig or "B2" in fig:
                 years = _df.columns.values

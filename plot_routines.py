@@ -527,7 +527,7 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
     ax.bar(x, y2, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][1], edgecolor='k', color=color_list[kwargs['legend'][1]])
     ax.bar(x, y3, width=kwargs['front_bar_width'], alpha=0.75, zorder=kwargs['front_bar_zorder'], label=kwargs['legend'][2], edgecolor='k', color=color_list[kwargs['legend'][2]])
 
-    # ax.set_xticks(ax.get_xticks(), rotation=45)
+    ax.set_xticklabels(x, rotation=45)
     ax.legend()
     frame = plt.gca()
     frame.axes.get_yaxis().set_visible(False)
@@ -537,18 +537,23 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def plot_multi_bars(x, y1, y2_bottom, y2_height, color_list, kwargs, fname=None):
+def plot_multi_bars(x, y1, y2, y2_bottom, y2_height, color_list, kwargs, fname=None):
     """y1 is a bar starting at the x axis, y2 is a range bar above"""
 
     fig, ax = initFigAxis(figx=kwargs['figx'])
 
     ind_label = 'Range of indirect job potential'
 
-    ax.bar(x, y1, width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
-    ax.bar(x, y2_height, width=kwargs['width'], bottom=y2_bottom, label=ind_label, color=color_list[kwargs['legend'][1]], edgecolor='k')
+    ymin = [y2_bottom[i] for i in np.argsort(y2)]
+    xsort = [x[i] for i in np.argsort(y2)]
+    y2sort = [y2_height[i] for i in np.argsort(y2)]
+    y1sort = [y1[i] for i in np.argsort(y2)]
 
-    # ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-    ax.set_xticklabels(x, rotation=kwargs['rotation'])
+
+    ax.bar(xsort[::-1], y1sort[::-1], width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
+    ax.bar(xsort[::-1], y2sort[::-1], width=kwargs['width'], bottom=ymin[::-1], label=ind_label, color=color_list[kwargs['legend'][1]], edgecolor='k')
+
+    ax.set_xticklabels(xsort[::-1], rotation=kwargs['rotation'])
     ax.set_ylabel(kwargs['ylabel'])
     ax.set_ylim(kwargs['ylim'])
     ax.legend(loc='upper left')
