@@ -234,11 +234,11 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
 
     # Add ports
     yPorts = yBase + y3
-    ax.fill_between(x, list(yBase), list(yPorts), color='b', label='Ports')
+    ax.fill_between(x, list(yBase), list(yPorts), color=color_list['Ports'], alpha=0.5, label='Ports')
     ax.plot(x, yPorts, 'k')
     # Add vessels
     yVessels = yPorts + y4
-    ax.fill_between(x, list(yPorts), list(yVessels), color='g', label='WTIVs and HLVs')
+    ax.fill_between(x, list(yPorts), list(yVessels), color=color_list['WTIV'], label='WTIVs and HLVs')
     ax.plot(x, yVessels, 'k')
 
     total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
