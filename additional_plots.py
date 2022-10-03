@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_bars
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_bars, plot_port_vessel_gantt
 from helpers import color_list
 
 
 dir_ind_jobs = False
-workforce_plots = True
+workforce_plots = False
+port_vessel_plots = True
 
 if __name__ == '__main__':
     ##### Gaps assessment slide deck
@@ -146,3 +147,48 @@ if __name__ == '__main__':
 
             else:
                 print("Figure type not identified")
+
+    if port_vessel_plots == True:
+        port_vessel_scenario = {
+            'Existing': {
+                'Ports': {
+                    'NBMCT': {'start': 2023, 'end': 2030, 'invest': 150},
+                    'NLSP': {'start': 2023, 'end': 2030, 'invest': 255},
+                    'PMT': {'start': 2025, 'end': 2030, 'invest': 250},
+                    'NJWP (1)': {'start': 2025, 'end': 2030, 'invest': 400},
+                    'TPA': {'start': 2025, 'end': 2030, 'invest': 200},
+                    'SBMT': {'start': 2027, 'end': 2030, 'invest': 260},
+                },
+                'WTIVs': {
+                    'European WTIV (1)': {'start': 2023, 'end': 2030, 'invest': 0},
+                    'European WTIV (2)': {'start': 2023, 'end': 2024, 'invest': 0},
+                    'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
+                    'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
+                },
+                'HLVs': {
+                    'O&G HLV (1)': {'start': 2023, 'end': 2030, 'invest': 0},
+                    'O&G HLV (2)': {'start': 2023, 'end': 2030, 'invest': 0},
+                }
+            },
+            'Expanded': {
+                'Ports': {
+                    'Salem': {'start': 2027, 'end': 2030, 'invest': 200},
+                    'AKT': {'start': 2027, 'end': 2030, 'invest': 400},
+                    'NJWP (2)': {'start': 2028, 'end': 2030, 'invest': 200},
+                    },
+                'WTIVs': {
+                    'New WTIV (1)': {'start': 2026, 'end': 2030, 'invest':500},
+                    'New WTIV (2)': {'start': 2028, 'end': 2030, 'invest':500},
+                    'New WTIV (3)': {'start': 2028, 'end': 2030, 'invest':500},
+                },
+                'HLVs': {
+                    'New O&G HLV (1)': {'start': 2027, 'end': 2030, 'invest': 350},
+                    'New O&G HLV (2)': {'start': 2027, 'end': 2030, 'invest': 350},
+                    'New O&G HLV (3)': {'start': 2027, 'end': 2030, 'invest': 350},
+                        }
+            }
+
+        }
+
+        fname = 'results/port_vessel_scenario_gantt'
+        plot_port_vessel_gantt(port_vessel_scenario, color_list, fname=fname)

@@ -106,7 +106,11 @@ color_list = {
     'Offshore specific capability ': '#5B9BD5',
     #
     'Announced_hatch': '\\\\',
-    'Scenario_hatch': '...'
+    'Scenario_hatch': '...',
+    # Color scheme for port and vessel scenarios
+    'Existing': '#C64D13',
+    'Expanded': '#0D855A',
+
 }
 
 label_map = {'Monopile': 'Monopile',
@@ -142,6 +146,14 @@ announced_name_map= {'EEW - Monopile': 'Port of Paulsboro, NJ',
     'Sembcorp - WTIV': 'International',
     'Nucor - Steel plate': 'Brandenburg, KY'
 }
+
+# port_vessel_scenario = {
+#     'Existing': {
+#
+#     },
+#     'Expanded':
+#
+# }
 
 def read_future_scenarios(file, sheet, header):
     """Read in factory deployment for given scenario"""

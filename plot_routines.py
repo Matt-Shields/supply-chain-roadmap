@@ -564,3 +564,90 @@ def plot_multi_bars(x, y1, y2, y2_bottom, y2_height, color_list, kwargs, fname=N
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def plot_port_vessel_gantt(data, color_list, fname):
+
+        # Select all cases
+        ports = []
+        wtivs = []
+        hlvs = []
+        ports_start = []
+        wtivs_start = []
+        hlvs_start = []
+        ports_end = []
+        wtivs_end = []
+        hlvs_end = []
+
+
+        y_existing = []
+
+        existing_start = []
+        existing_end = []
+        # expanded_start = []
+
+        # end_date = 2030
+
+        for k, v in data.items():
+            # Define all assets
+            ports += [i for i, j in data[k]['Ports'].items()]
+            wtivs += [i for i, j in data[k]['WTIVs'].items()]
+            hlvs += [i for i, j in data[k]['HLVs'].items()]
+
+            ports_start += [j['start'] for i, j in data[k]['Ports'].items()]
+            wtivs_start += [j['start'] for i, j in data[k]['WTIVs'].items()]
+            hlvs_start += [j['start'] for i, j in data[k]['HLVs'].items()]
+
+            ports_end += [j['end'] for i, j in data[k]['Ports'].items()]
+            wtivs_end += [j['end'] for i, j in data[k]['WTIVs'].items()]
+            hlvs_end += [j['end'] for i, j in data[k]['HLVs'].items()]
+
+            if k == 'Existing':
+                y_existing += [i for i, j in data[k]['Ports'].items()] + [i for i, j in data[k]['WTIVs'].items()] + [i for i, j in data[k]['HLVs'].items()]
+                existing_start += [j['start'] for i, j in data[k]['Ports'].items()] + [j['start'] for i, j in data[k]['WTIVs'].items()] + [j['start'] for i, j in data[k]['HLVs'].items()]
+                existing_end += [j['end'] for i, j in data[k]['Ports'].items()] + [j['end'] for i, j in data[k]['WTIVs'].items()] + [j['end'] for i, j in data[k]['HLVs'].items()]
+                existing_width = [e-s for s,e in zip(existing_start, existing_end)]
+
+        yvals = ports +  wtivs +  hlvs
+        ypos = np.arange(len(yvals))
+
+        expanded_start = ports_start + wtivs_start + hlvs_start
+        expanded_end= ports_end + wtivs_end + hlvs_end
+        expanded_width = [e-s for s,e in zip(expanded_start, expanded_end)]
+
+        # Make horizontal bar (Gantt)charts
+        fig, ax = initFigAxis()
+        bar_height = 0.5
+
+        ax.set_yticks(ypos)
+
+        ax.barh(yvals[::-1], left=expanded_start[::-1], width=expanded_width[::-1], height=bar_height, color=color_list['Expanded'], label='Expanded infrastructure scenario only')
+        ax.barh(y_existing[::-1], left=existing_start[::-1], width=existing_width[::-1], height=bar_height, color=color_list['Existing'], label='Existing and expanded infrastructure scenarios')
+
+        y1_line = len(yvals) - ( len(ports) + 0.5)
+        y2_line = len(yvals) - ( len(ports) + len(wtivs) + 0.5)
+
+
+        label_space = .075
+        y1_label = y1_line / len(yvals) + label_space
+        y2_label = y2_line / len(yvals) + label_space
+        y3_label = label_space
+
+        plt.axhline(y1_line, color='k', linestyle='--')
+        plt.axhline(y2_line, color='k', linestyle='--')
+
+        ax.set_xticks(list(np.arange(2023, 2029+2, 1)))
+        ax.set_xticklabels(ax.get_xticks(), rotation=45)
+        ax.grid(alpha=0.5)
+
+        handles, labels = ax.get_legend_handles_labels()
+        ax.legend(handles[::-1], labels[::-1], loc='upper center', bbox_to_anchor=(0.5, -0.12))
+
+        ax.text(.02, y1_label, 'Ports', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
+        ax.text(.02, y2_label, 'WTIVs', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
+        ax.text(.02, y3_label, 'HLVs', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
+
+
+        if fname is not None:
+            myformat(ax)
+            mysave(fig, fname)
+            plt.close()
