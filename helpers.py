@@ -108,8 +108,8 @@ color_list = {
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '...',
     # Color scheme for port and vessel scenarios
-    'Existing': '#C64D13',
-    'Expanded': '#0D855A',
+    'Existing': '#3D7F0B',
+    'Expanded': '#0D3D5C',
 
 }
 

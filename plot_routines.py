@@ -431,6 +431,8 @@ def simple_bar(x, y, yticks, xlabel=None, ylabel=None, fname=None):
     ax.set_ylabel(ylabel)
     ax.set_yticks(yticks)
 
+    ax.set_xticklabels(x, rotation=45)
+
     if fname:
         myformat(ax)
         mysave(fig, fname)
