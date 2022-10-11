@@ -86,8 +86,8 @@ color_list = {
     'Flange': '#B08300',
     'Casting': '#FFCA2F',
     # Color schem for announced/scneario:
-    'Announced': '#5D63AA',
-    'Scenario': '#2F8B6F',
+    'Announced': '#0079C2',
+    'Scenario': '#5D9732',
     'Deficit': '#801515',
     'Surplus': 'k',
     # Color scheme for jobs: Hue 278, RBG 4D249B Dist 159

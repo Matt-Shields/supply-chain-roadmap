@@ -310,8 +310,8 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     announced_vals = list(announced.values())
     scenario_vals = list(scenario.values())
 
-    ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='k', label='Announced')
-    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', bottom=announced_vals, label='Additional required')
+    ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='k', linewidth=2, label='Announced')
+    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', linewidth=2, bottom=announced_vals, label='Additional required')
 
     xlabels = [label_map[c] for c in components]
 
@@ -525,7 +525,7 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
 
     fig, ax = initFigAxis(figx=30)
 
-    ax.bar(x, y1, width=-kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][0], edgecolor='k', color=color_list[kwargs['legend'][0]])
+    ax.bar(x, y1, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][0], edgecolor='k', color=color_list[kwargs['legend'][0]])
     ax.bar(x, y2, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][1], edgecolor='k', color=color_list[kwargs['legend'][1]])
     ax.bar(x, y3, width=kwargs['front_bar_width'], alpha=0.75, zorder=kwargs['front_bar_zorder'], label=kwargs['legend'][2], edgecolor='k', color=color_list[kwargs['legend'][2]])
 
