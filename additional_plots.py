@@ -5,7 +5,7 @@ from helpers import color_list
 
 
 dir_ind_jobs = False
-workforce_plots = False
+workforce_plots = True
 port_vessel_plots = True
 
 if __name__ == '__main__':
@@ -88,8 +88,7 @@ if __name__ == '__main__':
                 y2 = _df.loc[:, label[1]].values
                 y3 = _df.loc[:, label[2]].values
 
-                kwargs = {'back_bar_width': 0.33,
-                            'front_bar_width': 0.5,
+                kwargs = {'bar_width': 0.2,
                             'back_bar_zorder': 0,
                             'front_bar_zorder': 1,
                             'legend': label

@@ -239,7 +239,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     # Add vessels
     yVessels = yPorts + y4
     ax.fill_between(x, list(yPorts), list(yVessels), color=color_list['WTIV'], label='WTIVs and HLVs')
-    ax.plot(x, yVessels, 'k')
+    ax.plot(x, yVessels, 'w')
 
     total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
     print('Cumulative supply chain investment is: ', total_inv)
@@ -525,11 +525,28 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
 
     fig, ax = initFigAxis(figx=30)
 
-    ax.bar(x, y1, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][0], edgecolor='k', color=color_list[kwargs['legend'][0]])
-    ax.bar(x, y2, width=kwargs['back_bar_width'], align='edge', zorder=kwargs['back_bar_zorder'], label=kwargs['legend'][1], edgecolor='k', color=color_list[kwargs['legend'][1]])
-    ax.bar(x, y3, width=kwargs['front_bar_width'], alpha=0.75, zorder=kwargs['front_bar_zorder'], label=kwargs['legend'][2], edgecolor='k', color=color_list[kwargs['legend'][2]])
+    # x =  np.arange(len(x_name))
 
-    ax.set_xticklabels(x, rotation=45)
+    y_avg = [(i+j+k)/3 for i,j,k in zip(y1, y2, y3)]
+    y_avg_sort = [y_avg[i] for i in np.argsort(y_avg)]
+    x_sort = [x[i] for i in np.argsort(y_avg)]
+    # x1_sort = [x[i] - kwargs['bar_width'] for i in np.argsort(y_avg)]
+    # x2_sort = [x[i] + kwargs['bar_width'] for i in np.argsort(y_avg)]
+    # x_name_sort = [x_name[i] for i in np.argsort(y_avg)]
+    y1_sort = [y1[i] for i in np.argsort(y_avg)]
+    y2_sort = [y2[i] for i in np.argsort(y_avg)]
+    y3_sort = [y3[i] for i in np.argsort(y_avg)]
+
+    x_tick = np.arange(len(x_sort))
+
+    ax.bar(x_tick - kwargs['bar_width'], y1_sort[::-1], width=kwargs['bar_width'],  label=kwargs['legend'][0], edgecolor='k', color=color_list[kwargs['legend'][0]])
+    ax.bar(x_tick, y2_sort[::-1], width=kwargs['bar_width'], label=kwargs['legend'][1], edgecolor='k', color=color_list[kwargs['legend'][1]])
+    ax.bar(x_tick + kwargs['bar_width'], y3_sort[::-1], kwargs['bar_width'],   label=kwargs['legend'][2], edgecolor='k', color=color_list[kwargs['legend'][2]])
+
+    ax.plot(x_sort[::-1], y_avg_sort[::-1],'k', label='Average score')
+
+    ax.set_xticks(x_tick)
+    ax.set_xticklabels(x_sort[::-1], rotation=45)
     ax.legend()
     frame = plt.gca()
     frame.axes.get_yaxis().set_visible(False)
