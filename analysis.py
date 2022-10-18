@@ -65,7 +65,7 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
         if c == 'WTIV':
             ylabel = 'Cumulative wind turbine installation vessels'
             _plot_average = None
-        elif c == 'Semisubmersible' or c == 'Mooring chain' or c == 'Mooring rope' or c == "Anchors":
+        elif c == 'Floating platform' or c == 'Mooring chain' or c == 'Mooring rope' or c == "Anchors":
             ylabel = 'Throughput (' + c + '/year)'
             _plot_average = [2028,2033]
         else:

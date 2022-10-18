@@ -31,7 +31,7 @@ scenarios = {
 filepath_pipeline = "library/total_demand.csv"
 filepath_deploy = "library/total_deployment.csv"
 
-components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Semisubmersible', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
+components = ['Blade', 'Nacelle', 'Tower','Monopile', 'Jacket', 'GBF', 'Transition piece', 'Array cable', 'Export cable', 'Floating platform', 'Mooring chain', 'Mooring rope', 'Steel plate', 'Flange', 'Casting']
 
 # Known facilities
 indiv_announced = ['EEW - Monopile',

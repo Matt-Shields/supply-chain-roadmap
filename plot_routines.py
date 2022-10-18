@@ -234,7 +234,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
         other = []
 
         turb_list = ['Blade','Nacelle', 'Tower']
-        sub_list = ['Monopile', 'Jacket', 'GBF', 'Semisubmersible']
+        sub_list = ['Monopile', 'Jacket', 'GBF', 'Floating platform']
         elec_list = ['Array cable', 'Export cable']
         steel_list = ['Steel plate']
 
@@ -287,6 +287,9 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
 
     if ymax is not None:
         ax.set_ylim([0,ymax])
+
+
+    # ax.set_xticklabels(components, rotation=90)
 
     ax.set_xlabel('Manufacturing date')
     ax.set_ylabel(ylabel)
@@ -351,15 +354,15 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     announced_vals = list(announced.values())
     scenario_vals = list(scenario.values())
 
-    ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='k', linewidth=2, label='Announced')
-    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='k', linewidth=2, bottom=announced_vals, label='Additional required')
+    ax.bar(components, announced_vals, color=color_list['Announced'], edgecolor='w', linewidth=2, label='Announced')
+    ax.bar(components, scenario_vals, color=color_list['Scenario'],  edgecolor='w', linewidth=2, bottom=announced_vals, label='Additional required')
 
-    xlabels = [label_map[c] for c in components]
+    # xlabels = [label_map[c] for c in components]
 
     ax.set_xticklabels(components, rotation=90)
     ax.set_ylabel('Number of facilities')
 
-    ax.legend(loc='upper left')
+    ax.legend(loc='upper right')
 
     if fname is not None:
         myformat(ax)
