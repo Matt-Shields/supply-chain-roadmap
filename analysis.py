@@ -117,7 +117,7 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
     total_ports = np.add(ports_inv, fab_port_inv)
     total_vessels = vessel_inv
 
-    plot_cumulative(years, total_announced_investment, total_scenario_investment, total_ports, total_vessels, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment', ymax=25000)
+    plot_cumulative(years, total_announced_investment, total_scenario_investment, total_ports, total_vessels, components, color_list, ylabel = 'Investment, $ million', fname='results/total_investment', ymax=25000, aggregate=True)
     #
     # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #

@@ -221,25 +221,66 @@ def plot_total_diff(x, y, demand, fname):
 
     return total_percent
 
-def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=None, alternate_breakdown=None, ymax=None):
+def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=None, alternate_breakdown=None, ymax=None, aggregate=False):
     """ PLot the cumulative investment or jobs in the overall supply chain"""
     fig, ax = initFigAxis()
 
     yBase = np.zeros(len(x))
-    for c in components:
-        yPlot = yBase + y1[c] + y2[c]
-        ax.plot(x, yPlot, 'k')
-        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
-        yBase = yPlot
+    if aggregate==True:
+        turb = []
+        sub = []
+        elec = []
+        steel = []
+        other = []
+
+        turb_list = ['Blade','Nacelle', 'Tower']
+        sub_list = ['Monopile', 'Jacket', 'GBF', 'Semisubmersible']
+        elec_list = ['Array cable', 'Export cable']
+        steel_list = ['Steel plate']
+
+        turb_plot = np.zeros(len(x))
+        sub_plot = np.zeros(len(x))
+        elec_plot = np.zeros(len(x))
+        steel_plot = np.zeros(len(x))
+        other_plot = np.zeros(len(x))
+        for c in components:
+            if c in turb_list:
+                turb_plot = [turb+a+s for turb,a,s in zip(turb_plot, y1[c],y2[c])]
+            elif c in sub_list:
+                sub_plot = [sub+a+s for sub,a,s in zip(sub_plot, y1[c],y2[c])]
+            elif c in elec_list:
+                elec_plot = [e+a+s for e,a,s in zip(elec_plot, y1[c],y2[c])]
+            elif c in steel_list:
+                steel_plot = [st+a+s for st,a,s in zip(steel_plot, y1[c],y2[c])]
+            else:
+                other_plot = [o+a+s for o,a,s in zip(other_plot, y1[c],y2[c])]
+
+        # agg_components = [turb_plot, sub_plot, elec_plot, steel_plot, other_plot]
+        # label = ['Wind turbines', 'Substructures', 'Electrical components', 'Steel plates', 'Other']
+        agg_components = [other_plot, steel_plot, elec_plot, sub_plot, turb_plot]
+        label = ['Other', 'Steel plates', 'Electrical components', 'Substructures', 'Wind turbines']
+
+        for ac,l in zip(agg_components, label):
+            yPlot = yBase + np.array(ac)
+            ax.plot(x, yPlot, 'w')
+            ax.fill_between(x, list(yBase), list(yPlot), color=color_list[l], label=l)
+            yBase = yPlot
+
+    else:
+        for c in components:
+            yPlot = yBase + y1[c] + y2[c]
+            ax.plot(x, yPlot, 'w')
+            ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
+            yBase = yPlot
 
     # Add ports
     yPorts = yBase + y3
     ax.fill_between(x, list(yBase), list(yPorts), color=color_list['Ports'], alpha=0.5, label='Ports')
-    ax.plot(x, yPorts, 'k')
+    ax.plot(x, yPorts, 'w')
     # Add vessels
     yVessels = yPorts + y4
     ax.fill_between(x, list(yPorts), list(yVessels), color=color_list['WTIV'], label='WTIVs and HLVs')
-    ax.plot(x, yVessels, 'w')
+    ax.plot(x, yVessels, 'k')
 
     total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
     print('Cumulative supply chain investment is: ', total_inv)
