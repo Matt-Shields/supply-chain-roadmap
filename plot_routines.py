@@ -129,7 +129,7 @@ def plot_supply_demand(x, y_zip, color_list, component, ylabel, y2=None, ylim=No
     color=color_list['Announced']
 
     for y, c, n, h in y_zip:
-        ax.bar(x, y, color=color, edgecolor='k',  label=n, bottom=y_total)
+        ax.bar(x, y, color=color, edgecolor='w', linewidth=2, label=n, bottom=y_total)
         y_total += y
         color=color_list['Scenario']
 
@@ -628,89 +628,158 @@ def plot_multi_bars(x, y1, y2, y2_bottom, y2_height, color_list, kwargs, fname=N
         mysave(fig, fname)
         plt.close()
 
-def plot_port_vessel_gantt(data, color_list, fname):
+def plot_port_vessel_gantt(data, color_list, scenario_label, fname):
 
         # Select all cases
         ports = []
         wtivs = []
         hlvs = []
+        feeders = []
         ports_start = []
         wtivs_start = []
         hlvs_start = []
+        feeders_start = []
         ports_end = []
         wtivs_end = []
         hlvs_end = []
+        feeders_end=[]
 
 
-        y_existing = []
-
-        existing_start = []
-        existing_end = []
+        y_baseline = []
+        baseline_start = []
+        baseline_end = []
+        y_us_wtiv = []
+        us_wtiv_start = []
+        us_wtiv_end = []
+        y_us_feeders = []
+        us_feeders_start = []
+        us_feeders_end = []
         # expanded_start = []
 
         # end_date = 2030
 
-        for k, v in data.items():
+        def myfun():
+            print('fun here')
+
+        resources = ['Ports', 'WTIVs', 'HLVs', 'Feeder barges']
+        scenarios = ['Baseline', 'Scenario']
+
+        for scenario, resources in data.items():
             # Define all assets
-            ports += [i for i, j in data[k]['Ports'].items()]
-            wtivs += [i for i, j in data[k]['WTIVs'].items()]
-            hlvs += [i for i, j in data[k]['HLVs'].items()]
+            combined_data = {}
+            combined_start = {}
+            combined_end = {}
+            combined_width = {}
+            baseline_data = {}
+            baseline_start = {}
+            baseline_end = {}
+            baseline_width = {}
+            scenario_data = {}
+            scenario_start = {}
+            scenario_end = {}
+            scenario_width = {}
 
-            ports_start += [j['start'] for i, j in data[k]['Ports'].items()]
-            wtivs_start += [j['start'] for i, j in data[k]['WTIVs'].items()]
-            hlvs_start += [j['start'] for i, j in data[k]['HLVs'].items()]
+            # Compile resources for each scneario
+            for resource, res_list in resources.items():
+                _tmp = []
+                _tmp_start = []
+                _tmp_end = []
 
-            ports_end += [j['end'] for i, j in data[k]['Ports'].items()]
-            wtivs_end += [j['end'] for i, j in data[k]['WTIVs'].items()]
-            hlvs_end += [j['end'] for i, j in data[k]['HLVs'].items()]
+                baseline_data[resource] = [i for i, j in res_list['Baseline'].items()]
+                baseline_start[resource] = [j['start'] for i,j in res_list['Baseline'].items()]
+                baseline_end[resource] = [j['end'] for i,j in res_list['Baseline'].items()]
+                baseline_width[resource] = [e-s for s,e in zip(baseline_start[resource], baseline_end[resource])]
 
-            if k == 'Existing':
-                y_existing += [i for i, j in data[k]['Ports'].items()] + [i for i, j in data[k]['WTIVs'].items()] + [i for i, j in data[k]['HLVs'].items()]
-                existing_start += [j['start'] for i, j in data[k]['Ports'].items()] + [j['start'] for i, j in data[k]['WTIVs'].items()] + [j['start'] for i, j in data[k]['HLVs'].items()]
-                existing_end += [j['end'] for i, j in data[k]['Ports'].items()] + [j['end'] for i, j in data[k]['WTIVs'].items()] + [j['end'] for i, j in data[k]['HLVs'].items()]
-                existing_width = [e-s for s,e in zip(existing_start, existing_end)]
+                scenario_data[resource] = [i for i, j in res_list['Scenario'].items()]
+                scenario_start[resource] = [j['start'] for i,j in res_list['Scenario'].items()]
+                scenario_end[resource] = [j['end'] for i,j in res_list['Scenario'].items()]
+                scenario_width[resource] = [e-s for s,e in zip(scenario_start[resource], scenario_end[resource])]
 
-        yvals = ports +  wtivs +  hlvs
-        ypos = np.arange(len(yvals))
+                combined_data[resource] = baseline_data[resource] + scenario_data[resource]
 
-        expanded_start = ports_start + wtivs_start + hlvs_start
-        expanded_end= ports_end + wtivs_end + hlvs_end
-        expanded_width = [e-s for s,e in zip(expanded_start, expanded_end)]
+            # Set up plots
+            yvals = []
+            ybase = []
+            ybase_start = []
+            # ybase_end = []
+            ybase_width = []
+            yscenario = []
+            yscenario_start = []
+            # yscenario_end = []
+            yscenario_width = []
 
-        # Make horizontal bar (Gantt)charts
-        fig, ax = initFigAxis()
-        bar_height = 0.5
+            for r in resources:
+                yvals.extend(combined_data[r])
+                ybase.extend(baseline_data[r])
+                ybase_start.extend(baseline_start[r])
+                ybase_width.extend(baseline_width[r])
+                yscenario.extend(scenario_data[r])
+                yscenario_start.extend(scenario_start[r])
+                yscenario_width.extend(scenario_width[r])
 
-        ax.set_yticks(ypos)
+            ypos = np.arange(len(yvals))
 
-        ax.barh(yvals[::-1], left=expanded_start[::-1], width=expanded_width[::-1], height=bar_height, color=color_list['Expanded'], label='Expanded infrastructure scenario only')
-        ax.barh(y_existing[::-1], left=existing_start[::-1], width=existing_width[::-1], height=bar_height, color=color_list['Existing'], label='Existing and expanded infrastructure scenarios')
+            fig, ax = initFigAxis()
+            bar_height = 0.5
 
-        y1_line = len(yvals) - ( len(ports) + 0.5)
-        y2_line = len(yvals) - ( len(ports) + len(wtivs) + 0.5)
+            # Dummy bar plot to fix ticks
+            ax.barh(yvals[::-1], left=[2025]*len(yvals), width=0)
+            ax.barh(ybase[::-1], left=ybase_start[::-1], width=ybase_width[::-1], height=bar_height, color=color_list['baseline'], label= 'Baseline scenario: No new development')
+            ax.barh(yscenario[::-1], left=yscenario_start[::-1], width=yscenario_width[::-1], height=bar_height, color=color_list[scenario], label=scenario_label[scenario])
+
+            # Remove duplicates to place lines
+            num_feeder = 0
+            num_hlv = 0
+            num_wtiv = 0
+            num_port = 0
+
+            yvals_unique = list(set(yvals))
+
+            for i in yvals_unique:
+                if 'feeder' in i:
+                    num_feeder += 1
+                elif 'WTIV' in i or 'Charybdis' in i or 'Maersk' in i:
+                    num_wtiv += 1
+                elif 'HLV' in i:
+                    num_hlv += 1
+                else:
+                    num_port += 1
+
+            y1_line = (num_feeder-1) + 0.5
+            y2_line = (num_feeder + num_hlv-1) + 0.5
+            y3_line = (num_feeder + num_hlv + num_wtiv-1) + 0.5
+            y4_line = (num_feeder + num_hlv + num_wtiv + num_port-1) + 0.5
+
+            #
+
+            # label_space = .1
+            y1_label = y1_line / 2 - 0.25
+            y2_label = (y1_line + y2_line) / 2
+            y3_label = (y2_line + y3_line) / 2
+            y4_label = (y3_line + y4_line) / 2
+
+            plt.axhline(y1_line, color='k', linestyle='--')
+            plt.axhline(y2_line, color='k', linestyle='--')
+            plt.axhline(y3_line, color='k', linestyle='--')
+
+            ax.set_xticks(list(np.arange(2023, 2029+2, 1)))
+            ax.set_xticklabels(ax.get_xticks(), rotation=45)
+            ax.grid(alpha=0.5)
+
+            handles, labels = ax.get_legend_handles_labels()
+            ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.12))
+
+            ax.set_xlim([2021.5, 2029+2])
+
+            xpos_label = 2022.25
+            ax.text(xpos_label, y1_label, 'Barges', ha='center', va='center', bbox=dict(facecolor='tab:gray', alpha=0.5))
+            ax.text(xpos_label, y2_label, 'HLVs', ha='center', va='center', bbox=dict(facecolor='tab:gray', alpha=0.5))
+            ax.text(xpos_label, y3_label, 'WTIVs', ha='center', va='center', bbox=dict(facecolor='tab:gray', alpha=0.5))
+            ax.text(xpos_label, y4_label, 'Ports',  ha='center', va='center', bbox=dict(facecolor='tab:gray', alpha=0.5))
 
 
-        label_space = .075
-        y1_label = y1_line / len(yvals) + label_space
-        y2_label = y2_line / len(yvals) + label_space
-        y3_label = label_space
-
-        plt.axhline(y1_line, color='k', linestyle='--')
-        plt.axhline(y2_line, color='k', linestyle='--')
-
-        ax.set_xticks(list(np.arange(2023, 2029+2, 1)))
-        ax.set_xticklabels(ax.get_xticks(), rotation=45)
-        ax.grid(alpha=0.5)
-
-        handles, labels = ax.get_legend_handles_labels()
-        ax.legend(handles[::-1], labels[::-1], loc='upper center', bbox_to_anchor=(0.5, -0.12))
-
-        ax.text(.02, y1_label, 'Ports', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
-        ax.text(.02, y2_label, 'WTIVs', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
-        ax.text(.02, y3_label, 'HLVs', transform=ax.transAxes, bbox=dict(facecolor='tab:gray', alpha=0.5))
-
-
-        if fname is not None:
-            myformat(ax)
-            mysave(fig, fname)
-            plt.close()
+            if fname is not None:
+                fname_scenario = fname + scenario
+                myformat(ax)
+                mysave(fig, fname_scenario)
+                plt.close()

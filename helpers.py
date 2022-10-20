@@ -41,7 +41,7 @@ ports_inv = np.cumsum([770, 0, 0, 0, 0, 387, 0, 860, 200, 0, 1400, 200, 200, 0])
 vessel_inv = np.cumsum([0, 500, 0, 0, 0, 500, 500, 1050, 1000, 0, 0, 0, 0, 0])
 
 
-ymax_plots = {'Monopile': 350,
+ymax_plots = {'Monopile': 400,
     'Jacket': 120,
     'GBF': 120,
     'Floating platform': 300,
@@ -113,8 +113,9 @@ color_list = {
     'Announced_hatch': '\\\\',
     'Scenario_hatch': '...',
     # Color scheme for port and vessel scenarios
-    'Existing': '#3D7F0B',
-    'Expanded': '#0D3D5C',
+    'baseline': '#3D7F0B',
+    'US_wtivs': '#0D3D5C',
+    'US_feeders': '#EC6200'
 
 }
 

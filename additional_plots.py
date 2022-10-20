@@ -5,7 +5,7 @@ from helpers import color_list
 
 
 dir_ind_jobs = False
-workforce_plots = True
+workforce_plots = False
 port_vessel_plots = True
 
 if __name__ == '__main__':
@@ -149,45 +149,87 @@ if __name__ == '__main__':
 
     if port_vessel_plots == True:
         port_vessel_scenario = {
-            'Existing': {
+            'US_wtivs': {
                 'Ports': {
-                    'NBMCT': {'start': 2023, 'end': 2030, 'invest': 150},
-                    'NLSP': {'start': 2023, 'end': 2030, 'invest': 255},
-                    'PMT': {'start': 2025, 'end': 2030, 'invest': 250},
-                    'NJWP (1)': {'start': 2025, 'end': 2030, 'invest': 400},
-                    'TPA': {'start': 2025, 'end': 2030, 'invest': 200},
-                    'SBMT': {'start': 2027, 'end': 2030, 'invest': 260},
-                },
-                'WTIVs': {
-                    'European WTIV (1)': {'start': 2023, 'end': 2030, 'invest': 0},
-                    'European WTIV (2)': {'start': 2023, 'end': 2024, 'invest': 0},
-                    'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
-                    'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
-                },
-                'HLVs': {
-                    'O&G HLV (1)': {'start': 2023, 'end': 2030, 'invest': 0},
-                    'O&G HLV (2)': {'start': 2023, 'end': 2030, 'invest': 0},
-                }
-            },
-            'Expanded': {
-                'Ports': {
-                    'Salem': {'start': 2027, 'end': 2030, 'invest': 200},
-                    'AKT': {'start': 2027, 'end': 2030, 'invest': 400},
-                    'NJWP (2)': {'start': 2028, 'end': 2030, 'invest': 200},
+                    'Baseline': {
+                        'NBMCT': {'start': 2023, 'end': 2030, 'invest': 150},
+                        'NLSP': {'start': 2023, 'end': 2030, 'invest': 255},
+                        'PMT': {'start': 2025, 'end': 2030, 'invest': 250},
+                        'NJWP (Phase 1)': {'start': 2025, 'end': 2030, 'invest': 400},
+                        'TPA': {'start': 2025, 'end': 2030, 'invest': 200},
+                        'SBMT': {'start': 2027, 'end': 2030, 'invest': 260},
+                    },
+                    'Scenario': {
+                        'Salem': {'start': 2027, 'end': 2030, 'invest': 200},
+                        'AKT': {'start': 2027, 'end': 2030, 'invest': 400},
+                        'NJWP (Phase 2)': {'start': 2028, 'end': 2030, 'invest': 200},
+                    }
                     },
                 'WTIVs': {
-                    'New WTIV (1)': {'start': 2026, 'end': 2030, 'invest':500},
-                    'New WTIV (2)': {'start': 2028, 'end': 2030, 'invest':500},
-                    'New WTIV (3)': {'start': 2028, 'end': 2030, 'invest':500},
+                    'Baseline': {
+                        'Foreign WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
+                        'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
+                        'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
+                        'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
+                    },
+                    'Scenario': {
+                        'New U.S. WTIV ': {'start': 2026, 'end': 2030, 'invest':500},
+                        'New U.S. WTIV (x2)': {'start': 2028, 'end': 2030, 'invest':1000}
+                    },
                 },
                 'HLVs': {
-                    'New O&G HLV (1)': {'start': 2027, 'end': 2030, 'invest': 350},
-                    'New O&G HLV (2)': {'start': 2027, 'end': 2030, 'invest': 350},
-                    'New O&G HLV (3)': {'start': 2027, 'end': 2030, 'invest': 350},
-                        }
-            }
+                    'Baseline': {'Foriegn HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'New U.S. or foreign HLV (x3)': {'start': 2027, 'end': 2030, 'invest': 1050},
+                        },},
+                'Feeder barges':{
+                    'Baseline': {'U.S. feeder (x4)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'U.S. feeder (x4)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    },
+            },
+            'US_feeders': {
+                'Ports': {
+                    'Baseline': {
+                        'NBMCT': {'start': 2023, 'end': 2030, 'invest': 150},
+                        'NLSP': {'start': 2023, 'end': 2030, 'invest': 255},
+                        'PMT': {'start': 2025, 'end': 2030, 'invest': 250},
+                        'NJWP (Phase 1)': {'start': 2025, 'end': 2030, 'invest': 400},
+                        'TPA': {'start': 2025, 'end': 2030, 'invest': 200},
+                        'SBMT': {'start': 2027, 'end': 2030, 'invest': 260},
+                    },
+                    'Scenario': {
+                        'Salem': {'start': 2027, 'end': 2030, 'invest': 200},
+                        'AKT': {'start': 2027, 'end': 2030, 'invest': 400},
+                        'NJWP (Phase 2)': {'start': 2028, 'end': 2030, 'invest': 200},
+                    }
+                    },
+                'WTIVs': {
+                    'Baseline': {
+                        'Foreign WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
+                        'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},                        
+                        'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
+                        'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
+                    },
+                    'Scenario': {
+                        'Foreign WTIV #3': {'start': 2023, 'end': 2030, 'invest':0},
+                        'Foreign WTIV #4': {'start': 2023, 'end': 2025, 'invest':500},}
+                    },
+                'HLVs': {
+                    'Baseline': {'Foriegn HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'New U.S. or foreign HLV (x3)': {'start': 2027, 'end': 2030, 'invest': 1050},
+                        },
+                    },
+                'Feeder barges':{
+                    'Baseline': {'U.S. feeder (x4)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'New U.S. feeder (x4)': {'start': 2026, 'end': 2030, 'invest': 0},}
+                    },
 
+                }
+        }
+
+        scenario_label = {
+            'US_wtivs': 'U.S. WTIV scenario: Focused investment in U.S.-flagged WTIVs',
+            'US_feeders': 'U.S. feeder scenario: Focused investment in U.S. flagged feeder barges',
         }
 
         fname = 'results/port_vessel_scenario_gantt'
-        plot_port_vessel_gantt(port_vessel_scenario, color_list, fname=fname)
+        plot_port_vessel_gantt(port_vessel_scenario, color_list, scenario_label, fname=fname)
