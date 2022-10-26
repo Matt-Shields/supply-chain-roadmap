@@ -724,8 +724,9 @@ def plot_port_vessel_gantt(data, color_list, scenario_label, fname):
 
             # Dummy bar plot to fix ticks
             ax.barh(yvals[::-1], left=[2025]*len(yvals), width=0)
-            ax.barh(ybase[::-1], left=ybase_start[::-1], width=ybase_width[::-1], height=bar_height, color=color_list['baseline'], label= 'Baseline scenario: No new development')
             ax.barh(yscenario[::-1], left=yscenario_start[::-1], width=yscenario_width[::-1], height=bar_height, color=color_list[scenario], label=scenario_label[scenario])
+            ax.barh(ybase[::-1], left=ybase_start[::-1], width=ybase_width[::-1], height=bar_height, color=color_list['baseline'], label= 'Baseline scenario: No new development')
+            # ax.barh(yscenario[::-1], left=yscenario_start[::-1], width=yscenario_width[::-1], height=bar_height, color=color_list[scenario], label=scenario_label[scenario])
 
             # Remove duplicates to place lines
             num_feeder = 0

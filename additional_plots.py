@@ -167,19 +167,19 @@ if __name__ == '__main__':
                     },
                 'WTIVs': {
                     'Baseline': {
-                        'Foreign WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
-                        'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
+                        'Foreign-flagged WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
+                        'Foreign-flagged WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
                         'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
                         'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
                     },
                     'Scenario': {
-                        'New U.S. WTIV ': {'start': 2026, 'end': 2030, 'invest':500},
-                        'New U.S. WTIV (x2)': {'start': 2028, 'end': 2030, 'invest':1000}
+                        'New U.S.-flagged WTIV (x4)': {'start': 2026, 'end': 2030, 'invest':500},
+                        # 'New U.S.-flagged WTIV (x2)': {'start': 2028, 'end': 2030, 'invest':1000}
                     },
                 },
                 'HLVs': {
-                    'Baseline': {'Foriegn HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
-                    'Scenario': {'New U.S. or foreign HLV (x3)': {'start': 2027, 'end': 2030, 'invest': 1050},
+                    'Baseline': {'Foriegn-flagged HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'U.S./foreign-flagged HLV (x4)': {'start': 2026, 'end': 2030, 'invest': 1050},
                         },},
                 'Feeder barges':{
                     'Baseline': {'U.S. feeder (x4)': {'start': 2023, 'end': 2030, 'invest': 0},},
@@ -205,7 +205,7 @@ if __name__ == '__main__':
                 'WTIVs': {
                     'Baseline': {
                         'Foreign WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
-                        'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},                        
+                        'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
                         'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
                         'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
                     },
@@ -214,8 +214,8 @@ if __name__ == '__main__':
                         'Foreign WTIV #4': {'start': 2023, 'end': 2025, 'invest':500},}
                     },
                 'HLVs': {
-                    'Baseline': {'Foriegn HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
-                    'Scenario': {'New U.S. or foreign HLV (x3)': {'start': 2027, 'end': 2030, 'invest': 1050},
+                    'Baseline': {'Foriegn-flagged HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
+                    'Scenario': {'U.S./foreign-flagged HLV (x3)': {'start': 2026, 'end': 2030, 'invest': 1050},
                         },
                     },
                 'Feeder barges':{
@@ -228,7 +228,7 @@ if __name__ == '__main__':
 
         scenario_label = {
             'US_wtivs': 'U.S. WTIV scenario: Focused investment in U.S.-flagged WTIVs',
-            'US_feeders': 'U.S. feeder scenario: Focused investment in U.S. flagged feeder barges',
+            'US_feeders': 'U.S. Feeder scenario: Focused investment in U.S. flagged feeder barges',
         }
 
         fname = 'results/port_vessel_scenario_gantt'

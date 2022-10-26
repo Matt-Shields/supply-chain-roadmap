@@ -114,8 +114,8 @@ color_list = {
     'Scenario_hatch': '...',
     # Color scheme for port and vessel scenarios
     'baseline': '#3D7F0B',
-    'US_wtivs': '#0D3D5C',
-    'US_feeders': '#EC6200'
+    'US_wtivs': '#EC6200',
+    'US_feeders': '#0D3D5C',
 
 }
 
