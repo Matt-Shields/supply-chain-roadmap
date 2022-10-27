@@ -5,8 +5,8 @@ from helpers import color_list
 
 
 dir_ind_jobs = False
-workforce_plots = False
-port_vessel_plots = True
+workforce_plots = True
+port_vessel_plots = False
 
 if __name__ == '__main__':
     ##### Gaps assessment slide deck
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         stacked_bar_2ser(component, direct, indirect, dir_col, indir_col, n1, n2, ylabel, fname, ymax)
 
     if workforce_plots == True:
-        wf_filepath = 'workforce_plot_data/SC Report WF Charts_All.xlsx'
+        wf_filepath = 'workforce_plot_data/SC Report WF Charts_All_October FINAL.xlsx'
 
         workforce_plot_list = {
             'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
@@ -57,8 +57,8 @@ if __name__ == '__main__':
 
             elif "Figure 16" in fig:
                 years = _df.columns.values
-                direct = _df.loc['Component (Direct Jobs)',:].values
-                indirect = _df.loc['Suppliers (Indirect Jobs, 100% Domestic Content)',:].values
+                direct = _df.loc['Major manufacturing facility jobs',:].values
+                indirect = _df.loc['Supplier jobs',:].values
                 label = ['Component (Direct jobs)', 'Suppliers (Indirect jobs, 100% domestic content)']
 
                 kwargs = {'bar_width': 0.5,
@@ -80,9 +80,9 @@ if __name__ == '__main__':
             elif "Figure 20" in fig:
                 states = _df.index.values
 
-                label = ['Similar industries capacity',
-                            'Proximity to conceptual facilities',
-                            'Offshore specific capability ']
+                label = ['Similar industry capability',
+                            'Proximity to scenario facilities',
+                            'Adjacent industry manufacturing scale ']
 
                 y1 = _df.loc[:, label[0]].values
                 y2 = _df.loc[:, label[1]].values
@@ -142,7 +142,7 @@ if __name__ == '__main__':
                     elif "B2" in fig:
                         fname = 'results/Conservative/indirect_workforce_rampup'
 
-                plot_cumulative_jobs(years, _df, components, color_list, kwargs, fname)
+                plot_cumulative_jobs(years, _df, components, color_list, kwargs, aggregate=True, fname=fname)
 
             else:
                 print("Figure type not identified")

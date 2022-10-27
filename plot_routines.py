@@ -538,16 +538,63 @@ def area_bar_chart(x, y1, y2, l, kwargs, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def plot_cumulative_jobs(x, y, components, color_list, kwargs, fname=None):
+def plot_cumulative_jobs(x, y, components, color_list, kwargs, aggregate=False, fname=None):
     """ PLot the cumulative jobs in the overall supply chain"""
     fig, ax = initFigAxis()
 
     yBase = np.zeros(len(x))
-    for c in components:
-        yPlot = y.loc[c,:].values + yBase
-        ax.plot(x, yPlot, 'k')
-        ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
-        yBase = yPlot
+    if aggregate==True:
+        turb = []
+        sub = []
+        elec = []
+        steel = []
+        other = []
+
+        turb_list = ['Blade','Nacelle', 'Tower']
+        sub_list = ['Monopile', 'Jacket', 'GBF', 'Floating platform']
+        elec_list = ['Array cable', 'Export cable']
+        steel_list = ['Steel plates']
+
+        turb_plot = np.zeros(len(x))
+        sub_plot = np.zeros(len(x))
+        elec_plot = np.zeros(len(x))
+        steel_plot = np.zeros(len(x))
+        other_plot = np.zeros(len(x))
+        for c in components:
+            if c in turb_list:
+                _tmp = list(y.loc[c,:])
+                turb_plot = [turb+_t for turb,_t in zip(turb_plot,_tmp)]
+            elif c in sub_list:
+                _tmp = list(y.loc[c,:])
+                sub_plot = [sub+_s for sub,_s in zip(sub_plot, _tmp)]
+            elif c in elec_list:
+                _tmp = list(y.loc[c,:])
+                elec_plot = [e+_e for e,_e in zip(elec_plot, _tmp)]
+            elif c in steel_list:
+                _tmp = list(y.loc[c,:])
+                steel_plot = [st+_st for st,_st in zip(steel_plot, _tmp)]
+            else:
+                _tmp = list(y.loc[c,:])
+                other_plot = [o+_o for o,_o in zip(other_plot, _tmp)]
+
+        # agg_components = [turb_plot, sub_plot, elec_plot, steel_plot, other_plot]
+        # label = ['Wind turbines', 'Substructures', 'Electrical components', 'Steel plates', 'Other']
+        agg_components = [other_plot, steel_plot, elec_plot, sub_plot, turb_plot]
+        label = ['Other', 'Steel plates', 'Electrical components', 'Substructures', 'Wind turbines']
+
+        for ac,l in zip(agg_components, label):
+            yPlot = yBase + np.array(ac)
+            ax.plot(x, yPlot, 'w')
+            ax.fill_between(x, list(yBase), list(yPlot), color=color_list[l], label=l)
+            yBase = yPlot
+
+    else:
+        for c in components:
+            yPlot = yBase + y1[c] + y2[c]
+            ax.plot(x, yPlot, 'w')
+            ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
+            yBase = yPlot
+
 
     ax.set_xlabel(kwargs['xlabel'])
     ax.set_ylabel(kwargs['ylabel'])
