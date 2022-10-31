@@ -279,7 +279,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     ax.plot(x, yPorts, 'w')
     # Add vessels
     yVessels = yPorts + y4
-    ax.fill_between(x, list(yPorts), list(yVessels), color=color_list['WTIV'], label='WTIVs and HLVs')
+    ax.fill_between(x, list(yPorts), list(yVessels), color=color_list['WTIV'], label='Installation vessels')
     ax.plot(x, yVessels, 'k')
 
     total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
@@ -666,7 +666,7 @@ def plot_multi_bars(x, y1, y2, y2_bottom, y2_height, color_list, kwargs, fname=N
     ax.set_xticklabels(xsort[::-1], rotation=kwargs['rotation'])
     ax.set_ylabel(kwargs['ylabel'])
     ax.set_ylim(kwargs['ylim'])
-    ax.legend(loc='upper left')
+    ax.legend(loc='upper right')
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
