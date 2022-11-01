@@ -6,7 +6,7 @@ from helpers import color_list
 
 dir_ind_jobs = False
 workforce_plots = True
-port_vessel_plots = False
+port_vessel_plots = True
 
 if __name__ == '__main__':
     ##### Gaps assessment slide deck
@@ -167,7 +167,7 @@ if __name__ == '__main__':
                     },
                 'WTIVs': {
                     'Baseline': {
-                        'Foreign-flagged WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
+                        'Foreign-flagged WTIV #1': {'start': 2023, 'end': 2025, 'invest': 0},
                         'Foreign-flagged WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
                         'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
                         'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
@@ -204,18 +204,17 @@ if __name__ == '__main__':
                     },
                 'WTIVs': {
                     'Baseline': {
-                        'Foreign WTIV #1': {'start': 2023, 'end': 2030, 'invest': 0},
+                        'Foreign WTIV #1': {'start': 2023, 'end': 2025, 'invest': 0},
                         'Foreign WTIV #2': {'start': 2023, 'end': 2024, 'invest': 0},
                         'Charybdis': {'start': 2024, 'end': 2030, 'invest': 500},
                         'Maersk': {'start': 2025, 'end': 2030, 'invest': 500},
                     },
                     'Scenario': {
-                        'Foreign WTIV #3': {'start': 2023, 'end': 2030, 'invest':0},
-                        'Foreign WTIV #4': {'start': 2023, 'end': 2025, 'invest':500},}
+                        'U.S./foreign-flagged WTIV (x2)': {'start': 2026, 'end': 2030, 'invest':0},}
                     },
                 'HLVs': {
                     'Baseline': {'Foriegn-flagged HLV (x2)': {'start': 2023, 'end': 2030, 'invest': 0},},
-                    'Scenario': {'U.S./foreign-flagged HLV (x3)': {'start': 2026, 'end': 2030, 'invest': 1050},
+                    'Scenario': {'U.S./foreign-flagged HLV (x2)': {'start': 2026, 'end': 2030, 'invest': 1050},
                         },
                     },
                 'Feeder barges':{

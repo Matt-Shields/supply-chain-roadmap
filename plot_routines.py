@@ -288,7 +288,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     if ymax is not None:
         ax.set_ylim([0,ymax])
 
-
+    ax.set_xlim([2020,2030])
     # ax.set_xticklabels(components, rotation=90)
 
     ax.set_xlabel('Manufacturing date')
