@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_port_vessel_gantt
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_multi_bar, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_port_vessel_gantt
 from helpers import color_list
 
 
@@ -61,14 +61,15 @@ if __name__ == '__main__':
                 indirect_100 = _df.loc['Supplier jobs (100% domestic content)',:].values
                 indirect_25 = _df.loc['Supplier jobs (25% domestic content)',:].values
                 label = ['Major manufacturing jobs (prescribed)',
-                        'Supplier jobs (100% domestic content)',
-                        'Supplier jobs (25% domestic content)']
+                        'Supplier jobs (25% domestic content)',
+                        'Supplier jobs (100% domestic content)']
 
-                kwargs = {'bar_width': 0.5,
+                kwargs = {'bar_width': 0.33,
                             'zorder1': 0,
                             'zorder2': 1,
                             'color1': color_list[label[0]],
                             'color2': color_list[label[1]],
+                            'color3': color_list[label[2]],
                             'ylim': [0, 60000],
                             'ylabel': 'Job market opportunity, Potential FTEs',
                             'xlabel': 'Manufacturing date'
@@ -79,7 +80,14 @@ if __name__ == '__main__':
                     fname = 'results/Accelerated/workforce_rampup'
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
-                area_bar_chart(years, direct, indirect_100, label, kwargs, fname)
+                area_bar_chart(years, direct, indirect_25, indirect_100, label, kwargs, fname)
+                # Alternate plot
+                kwargs['bar_width'] = 0.25
+                if "top" in fig:
+                    fname_alt = 'results/Accelerated/workforce_rampup_alt'
+                elif "bottom" in fig:
+                    fname_alt = 'results/Conservative/workforce_rampup_alt'
+                plot_multi_bar(years, direct, indirect_25, indirect_100, label, kwargs, fname_alt)
             elif "Figure 20" in fig:
                 states = _df.index.values
 
