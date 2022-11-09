@@ -105,8 +105,11 @@ color_list = {
     'Component (Direct jobs)': '#FF8500',
     'Direct jobs': '#FF8500',
     'Suppliers (Indirect jobs, 100% domestic content)': '#055B7C',
+    'Major manufacturing jobs (prescribed)': '#FF8500',
+    'Supplier jobs (100% domestic content)': '#055B7C',
+    'Supplier jobs (25% domestic content)': '#055B7C',
     'Indirect jobs': '#055B7C',
-    'Similar industry capability': '#933C06',
+    'Existing similar industries': '#933C06',
     'Proximity to scenario facilities': '#D1D5D8',
     'Adjacent industry manufacturing scale ': '#F7A11A',
     #

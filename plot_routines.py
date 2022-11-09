@@ -647,21 +647,23 @@ def plot_overlap_bar(x, y1, y2, y3, color_list, kwargs, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def plot_multi_bars(x, y1, y2, y2_bottom, y2_height, color_list, kwargs, fname=None):
-    """y1 is a bar starting at the x axis, y2 is a range bar above"""
+def plot_multi_line(x, y1, y2_top, y2_bottom, color_list, kwargs, fname=None):
+    """y1 is a line plot, y2 is a line plot with error bounds"""
 
     fig, ax = initFigAxis(figx=kwargs['figx'])
 
-    ind_label = 'Range of indirect job potential'
+    y2_avg = [(y1+y2)/2 for y1,y2 in zip(y2_top, y2_bottom)]
 
-    ymin = [y2_bottom[i] for i in np.argsort(y2)]
-    xsort = [x[i] for i in np.argsort(y2)]
-    y2sort = [y2_height[i] for i in np.argsort(y2)]
-    y1sort = [y1[i] for i in np.argsort(y2)]
+    y2minsort = [y2_bottom[i] for i in np.argsort(y2_avg)]
+    xsort = [x[i] for i in np.argsort(y2_avg)]
+    y2maxsort = [y2_top[i] for i in np.argsort(y2_avg)]
+    y1sort = [y1[i] for i in np.argsort(y2_avg)]
 
 
+    ax.fill_between(xsort[::-1], y2minsort[::-1], y2maxsort[::-1], label=kwargs['legend'][1], color='#D1D5D8')
+    ax.plot(xsort[::-1], y2minsort[::-1], color='k')
+    ax.plot(xsort[::-1], y2maxsort[::-1], color='k')
     ax.bar(xsort[::-1], y1sort[::-1], width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
-    ax.bar(xsort[::-1], y2sort[::-1], width=kwargs['width'], bottom=ymin[::-1], label=ind_label, color=color_list[kwargs['legend'][1]], edgecolor='k')
 
     ax.set_xticklabels(xsort[::-1], rotation=kwargs['rotation'])
     ax.set_ylabel(kwargs['ylabel'])

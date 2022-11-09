@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_bars, plot_port_vessel_gantt
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_port_vessel_gantt
 from helpers import color_list
 
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         stacked_bar_2ser(component, direct, indirect, dir_col, indir_col, n1, n2, ylabel, fname, ymax)
 
     if workforce_plots == True:
-        wf_filepath = 'workforce_plot_data/SC Report WF Charts_All_October FINAL.xlsx'
+        wf_filepath = 'workforce_plot_data/SC Report WF Charts_All_November FINAL.xlsx'
 
         workforce_plot_list = {
             'Figure 5': {'header': 3, 'index_col': 0, 'usecols': 'A:B', 'nrows': 5},
@@ -57,9 +57,12 @@ if __name__ == '__main__':
 
             elif "Figure 16" in fig:
                 years = _df.columns.values
-                direct = _df.loc['Major manufacturing facility jobs',:].values
-                indirect = _df.loc['Supplier jobs',:].values
-                label = ['Component (Direct jobs)', 'Suppliers (Indirect jobs, 100% domestic content)']
+                direct = _df.loc['Major manufacturing jobs (prescribed)',:].values
+                indirect_100 = _df.loc['Supplier jobs (100% domestic content)',:].values
+                indirect_25 = _df.loc['Supplier jobs (25% domestic content)',:].values
+                label = ['Major manufacturing jobs (prescribed)',
+                        'Supplier jobs (100% domestic content)',
+                        'Supplier jobs (25% domestic content)']
 
                 kwargs = {'bar_width': 0.5,
                             'zorder1': 0,
@@ -67,7 +70,7 @@ if __name__ == '__main__':
                             'color1': color_list[label[0]],
                             'color2': color_list[label[1]],
                             'ylim': [0, 60000],
-                            'ylabel': 'Potential Job Opportunities, FTEs',
+                            'ylabel': 'Job market opportunity, Potential FTEs',
                             'xlabel': 'Manufacturing date'
                             }
 
@@ -76,11 +79,11 @@ if __name__ == '__main__':
                     fname = 'results/Accelerated/workforce_rampup'
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
-                area_bar_chart(years, direct, indirect, label, kwargs, fname)
+                area_bar_chart(years, direct, indirect_100, label, kwargs, fname)
             elif "Figure 20" in fig:
                 states = _df.index.values
 
-                label = ['Similar industry capability',
+                label = ['Existing similar industries',
                             'Proximity to scenario facilities',
                             'Adjacent industry manufacturing scale ']
 
@@ -103,11 +106,11 @@ if __name__ == '__main__':
                 y2_bottom = _df.iloc[0,:].values
                 y2_top = _df.iloc[1,:].values
 
-                y2_height = [t-b for b,t in zip(y2_bottom, y2_top)]
+                # y2_height = [t-b for b,t in zip(y2_bottom, y2_top)]
 
                 kwargs = {'width': 0.4,
-                            'legend': ['Direct jobs', 'Indirect jobs'],
-                            'ylabel': 'FTEs',
+                            'legend': ['Major manufacturing jobs (prescribed)', 'Supplier jobs'],
+                            'ylabel': 'Job market opportunity, Potential FTEs',
                 }
 
                 if "21" in fig:
@@ -121,7 +124,7 @@ if __name__ == '__main__':
                     kwargs['figx'] = 12
                     kwargs['rotation'] = 90
 
-                plot_multi_bars(states, y1, y2_top, y2_bottom, y2_height, color_list, kwargs, fname)
+                plot_multi_line(states, y1, y2_top, y2_bottom, color_list, kwargs, fname)
 
             elif "B1" in fig or "B2" in fig:
                 years = _df.columns.values
