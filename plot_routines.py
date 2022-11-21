@@ -499,6 +499,7 @@ def pie_plot(y, c, n, fname=None):
 
     wedges, texts = ax.pie(sort_dict.values(), colors=sort_c_dict.keys())
     ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.rcParams['patch.edgecolor'] = 'white'
 
     ax.legend(wedges[::-1], list(sort_dict.keys())[::-1],
               loc='center left',
@@ -682,6 +683,36 @@ def plot_multi_line(x, y1, y2_top, y2_bottom, color_list, kwargs, fname=None):
     ax.fill_between(xsort[::-1], y2minsort[::-1], y2maxsort[::-1], label=kwargs['legend'][1], color='#D1D5D8')
     ax.plot(xsort[::-1], y2minsort[::-1], color='k')
     ax.plot(xsort[::-1], y2maxsort[::-1], color='k')
+    ax.bar(xsort[::-1], y1sort[::-1], width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
+
+    ax.set_xticklabels(xsort[::-1], rotation=kwargs['rotation'])
+    ax.set_ylabel(kwargs['ylabel'])
+    ax.set_ylim(kwargs['ylim'])
+    ax.legend(loc='upper right')
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+    if fname is not None:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+def plot_state_job_opp(x, y1, y2_avg, y2_top, y2_bottom, color_list, kwargs, fname=None):
+    """y1 is a line plot, y2 is a line plot with error bounds"""
+
+    fig, ax = initFigAxis(figx=kwargs['figx'])
+
+    # y2_avg = [(y1+y2)/2 for y1,y2 in zip(y2_top, y2_bottom)]
+
+    y2avgsort = [y2_avg[i] for i in np.argsort(y2_avg)]
+    y2minsort = [y2_bottom[i] for i in np.argsort(y2_avg)]
+    xsort = [x[i] for i in np.argsort(y2_avg)]
+    y2maxsort = [y2_top[i] for i in np.argsort(y2_avg)]
+    y1sort = [y1[i] for i in np.argsort(y2_avg)]
+    ebars = [y2minsort[::-1], y2maxsort[::-1]]
+
+
+    ax.errorbar(xsort[::-1], y2avgsort[::-1], yerr=ebars, fmt='none', capsize=0.1, elinewidth=5, capthick=5, label=kwargs['legend'][1])
     ax.bar(xsort[::-1], y1sort[::-1], width=kwargs['width'], label=kwargs['legend'][0], color=color_list[kwargs['legend'][0]], edgecolor='k')
 
     ax.set_xticklabels(xsort[::-1], rotation=kwargs['rotation'])

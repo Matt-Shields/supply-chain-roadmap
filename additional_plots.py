@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_multi_bar, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_port_vessel_gantt
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_multi_bar, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_state_job_opp, plot_port_vessel_gantt
 from helpers import color_list
 
 
@@ -115,9 +115,12 @@ if __name__ == '__main__':
                 y2_top = _df.iloc[1,:].values
 
                 # y2_height = [t-b for b,t in zip(y2_bottom, y2_top)]
+                y2_avg = [(t+b)/2 for b,t in zip(y2_bottom, y2_top)]
+                y2_top_err = [t-a for t,a in zip(y2_top, y2_avg)]
+                y2_bot_err = [a-b for a,b in zip(y2_avg, y2_bottom)]
 
                 kwargs = {'width': 0.4,
-                            'legend': ['Major manufacturing jobs (prescribed)', 'Supplier jobs'],
+                            'legend': ['Major manufacturing jobs (prescribed)', 'Supplier jobs (100% domestic content)'],
                             'ylabel': 'Job market opportunity, Potential FTEs',
                 }
 
@@ -133,6 +136,7 @@ if __name__ == '__main__':
                     kwargs['rotation'] = 90
 
                 plot_multi_line(states, y1, y2_top, y2_bottom, color_list, kwargs, fname)
+                plot_state_job_opp(states, y1, y2_avg, y2_top_err, y2_bot_err, color_list, kwargs, fname)
 
             elif "B1" in fig or "B2" in fig:
                 years = _df.columns.values
