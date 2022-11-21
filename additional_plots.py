@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_multi_bar, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_state_job_opp, plot_port_vessel_gantt
+from plot_routines import stacked_bar_2ser, simple_bar, pie_plot, area_bar_chart, plot_cumulative_jobs, plot_overlap_bar, plot_multi_line, plot_state_job_opp, plot_port_vessel_gantt
 from helpers import color_list
 
 
@@ -81,13 +81,6 @@ if __name__ == '__main__':
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
                 area_bar_chart(years, direct, indirect_25, indirect_100, label, kwargs, fname)
-                # Alternate plot
-                kwargs['bar_width'] = 0.25
-                if "top" in fig:
-                    fname_alt = 'results/Accelerated/workforce_rampup_alt'
-                elif "bottom" in fig:
-                    fname_alt = 'results/Conservative/workforce_rampup_alt'
-                plot_multi_bar(years, direct, indirect_25, indirect_100, label, kwargs, fname_alt)
             elif "Figure 20" in fig:
                 states = _df.index.values
 

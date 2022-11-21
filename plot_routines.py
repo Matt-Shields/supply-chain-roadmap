@@ -539,25 +539,6 @@ def area_bar_chart(x, y1, y2, y3, l, kwargs, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def plot_multi_bar(x, y1, y2, y3, l, kwargs, fname=None):
-    fig, ax = initFigAxis()
-
-    ax.bar(x-kwargs['bar_width'], y1, width=kwargs['bar_width'], color=kwargs['color1'], label=l[0], zorder=kwargs['zorder2'], edgecolor='w')
-    ax.bar(x, y2, width=kwargs['bar_width'], color=kwargs['color2'], label=l[1], zorder=kwargs['zorder2'], edgecolor='w')
-    ax.bar(x+kwargs['bar_width'], y3, width=kwargs['bar_width'], color=kwargs['color3'], label=l[2], zorder=kwargs['zorder2'], edgecolor='w')
-    ax.set_xlabel(kwargs['xlabel'])
-    ax.set_ylabel(kwargs['ylabel'])
-    ax.set_xlim(x[0], x[-1]+1)
-    ax.set_ylim(kwargs['ylim'])
-    ax.legend(loc='upper left')
-    ax.get_yaxis().set_major_formatter(
-        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-
-    if fname:
-        myformat(ax)
-        mysave(fig, fname)
-        plt.close()
-
 def plot_cumulative_jobs(x, y, components, color_list, kwargs, aggregate=False, fname=None):
     """ PLot the cumulative jobs in the overall supply chain"""
     fig, ax = initFigAxis()
