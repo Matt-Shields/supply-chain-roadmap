@@ -64,15 +64,16 @@ if __name__ == '__main__':
                         'Supplier jobs (25% domestic content)',
                         'Supplier jobs (100% domestic content)']
 
-                kwargs = {'bar_width': 0.33,
+                kwargs = {'bar_width': 0.5,
                             'zorder1': 0,
-                            'zorder2': 1,
+                            'zorder2': 2,
+                            'zorder3': 1,
                             'color1': color_list[label[0]],
                             'color2': color_list[label[1]],
                             'color3': color_list[label[2]],
                             'ylim': [0, 60000],
                             'ylabel': 'Job market opportunity, Potential FTEs',
-                            'xlabel': 'Manufacturing date'
+                            'xlabel': 'Facility operational date'
                             }
 
                 # Different names and directories for accelerated and conservative scenarios
@@ -95,7 +96,9 @@ if __name__ == '__main__':
                 kwargs = {'bar_width': 0.2,
                             'back_bar_zorder': 0,
                             'front_bar_zorder': 1,
-                            'legend': label
+                            'legend': ['Similar industry capability',
+                                        'Proximity to scenario facilities',
+                                        'Adjacent industry manufacturing scale ']
                             }
                 fname = 'results/workforce/state_scoring'
 
@@ -135,8 +138,8 @@ if __name__ == '__main__':
                 years = _df.columns.values
                 components = _df.index.values
 
-                kwargs = {'xlabel': 'Manufacturing date',
-                            'ylabel': 'Potential Job Opportunities, FTEs',
+                kwargs = {'xlabel': 'Facility operational date',
+                            'ylabel': 'Job market opportunity, Potential FTEs',
                             'ylim': [0, 60000],
                         }
                 if "top" in fig:

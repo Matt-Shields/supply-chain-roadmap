@@ -524,8 +524,8 @@ def area_bar_chart(x, y1, y2, y3, l, kwargs, fname=None):
     ax.plot(x,y1, 'k', zorder=kwargs['zorder1'])
 
     # Bar plot
-    ax.bar(x, y2, width=-kwargs['bar_width'], align='edge', color=kwargs['color2'], label=l[1], zorder=kwargs['zorder2'], edgecolor='w')
-    ax.bar(x, y3, width=kwargs['bar_width'], align='edge', color=kwargs['color3'], label=l[2], zorder=kwargs['zorder2'], edgecolor='w')
+    ax.bar(x, y2, width=kwargs['bar_width'],  color=kwargs['color2'], label=l[1], zorder=kwargs['zorder2'], edgecolor='w')
+    ax.bar(x, y3, width=kwargs['bar_width'],  color=kwargs['color3'], label=l[2], zorder=kwargs['zorder3'], edgecolor='w')
     ax.set_xlabel(kwargs['xlabel'])
     ax.set_ylabel(kwargs['ylabel'])
     ax.set_xlim(x[0], x[-1]+1)
