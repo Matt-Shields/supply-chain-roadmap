@@ -85,4 +85,4 @@ if __name__ == "__main__":
 
     # Inter-scenario results and plots
     lineplot_comp(mnf_years, domestic_sc_percent_scenarios, legend[1:], linetype[1:], xlabel='Manufacturing date', ylabel='Manufacturing capacity (% of demand)', xlim = [2020, 2034], ylim = [0, 110], fname='results/domestic_percent')
-    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, xlabel='Commercial operation date', ylabel='Installed capacity, GW', xlim = [2022, 2036], ylim = [0, 70], fname='results/deployment_impact')
+    lineplot_comp(cod_years, deploy_scenarios, legend, linetype, xlabel='Commercial operation date', ylabel='Installed capacity from \ndomestic supply chain, GW', xlim = [2025, 2035], ylim = [0, 70], fname='results/deployment_impact', title='Offshore wind projects will need to import components \nwhile the domestic supply chain develops. Global supply \nbottlenecks could limit deployment if U.S. projects can \nnot source a sufficient number of these components.')

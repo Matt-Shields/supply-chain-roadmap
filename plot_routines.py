@@ -444,7 +444,7 @@ def plot_gantt(components, announced, scenario, color_list, single_component=Fal
         mysave(fig, fname)
         plt.close()
 
-def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname):
+def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname, title=None):
     fig, ax = initFigAxis()
 
     # Write data out
@@ -460,8 +460,13 @@ def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname):
     ax.set_ylabel(ylabel)
     ax.set_ylim(ylim)
     ax.set_xlim(xlim)
+    ax.set_xticks(np.arange(xlim[0], xlim[1]+1, step=2))
     ax.legend(loc='upper left')
     ax.grid()
+
+    if title:
+        ax.set_title(title, pad=20)
+
     if fname:
         myformat(ax)
         mysave(fig, fname)
