@@ -67,7 +67,7 @@ def myformat(ax, linewidth=linewidth, xticklabel=tickLabelSize, yticklabel=tickL
                 if not th is None:
                     th.set_fontsize(legendSize + deltaShow + 6)
 
-            myax.set_title(myax.get_title(), size=titleSize + deltaShow, weight='bold')
+            myax.set_title(myax.get_title(), size=titleSize + deltaShow, weight='bold', pad=20)
             myax.set_xlabel(myax.get_xlabel(), size=axLabelSize + deltaShow, weight='bold')
             myax.set_ylabel(myax.get_ylabel(), size=axLabelSize + deltaShow, weight='bold')
             myax.tick_params(labelsize=tickLabelSize + deltaShow)
@@ -99,7 +99,7 @@ def myformat(ax, linewidth=linewidth, xticklabel=tickLabelSize, yticklabel=tickL
                 if not th is None:
                     th.set_fontsize(legendSize)
 
-            myax.set_title(myax.get_title(), size=titleSize, weight='bold')
+            myax.set_title(myax.get_title(), size=titleSize, weight='bold', pad=20)
             myax.set_xlabel(myax.get_xlabel(), size=axLabelSize, weight='bold')
             myax.set_ylabel(myax.get_ylabel(), size=axLabelSize, weight='bold')
             myax.tick_params(labelsize=tickLabelSize)
@@ -286,6 +286,8 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     print('Manufacturing supply chain investment (no ports/vessels) is: ', partial_inv)
     print('Cumulative supply chain investment is: ', total_inv)
 
+    total_inv_2030 =  np.around(total_inv.loc[total_inv['Year']==2030]['Investment'].values/1000,1)[0]
+
     if ymax is not None:
         ax.set_ylim([0,ymax])
 
@@ -300,6 +302,9 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[::-1], labels[::-1], loc='upper left')
     # ax.legend(loc='upper left')
+
+    title = 'A domestic offshore wind energy supply chain designed \nto meet the annual demand for major components in 2030 \nwould require an investment of at least $' + str(total_inv_2030) + ' billion'
+    ax.set_title(title)
 
     if fname is not None:
         myformat(ax, linewidth=2)
@@ -366,7 +371,7 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None, title=None):
     ax.legend(loc='upper right')
 
     if title:
-        ax.set_title(title, pad=20)
+        ax.set_title(title)
 
 
     if fname is not None:
@@ -470,7 +475,7 @@ def lineplot_comp(x, y, legend, linetype, xlabel, ylabel, xlim, ylim, fname, tit
     ax.grid()
 
     if title:
-        ax.set_title(title, pad=20)
+        ax.set_title(title)
 
     if fname:
         myformat(ax)
