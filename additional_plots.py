@@ -72,6 +72,7 @@ if __name__ == '__main__':
                             'color2': color_list[label[1]],
                             'color3': color_list[label[2]],
                             'ylim': [0, 60000],
+                            'xticks': np.arange(2021,2035+1,2),
                             'ylabel': 'Job market opportunity, Potential FTEs',
                             'xlabel': 'Facility operational date'
                             }
@@ -79,9 +80,12 @@ if __name__ == '__main__':
                 # Different names and directories for accelerated and conservative scenarios
                 if "top" in fig:
                     fname = 'results/Accelerated/workforce_rampup'
+                    title = "An offshore wind supply chain could create a vast number \nof jobs, with a higher market opportunity in the supporting \nsupply chain than in major manufacturing facilities"
                 elif "bottom" in fig:
                     fname = 'results/Conservative/workforce_rampup'
-                area_bar_chart(years, direct, indirect_25, indirect_100, label, kwargs, fname)
+                    title = "An offshore wind energy supply chain could create a vast number of jobs, with a higher market in the supporting supply chain than in major manufacturing facilities"
+
+                area_bar_chart(years, direct, indirect_25, indirect_100, label, kwargs, fname, title)
             elif "Figure 20" in fig:
                 states = _df.index.values
 

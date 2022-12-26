@@ -530,7 +530,7 @@ def pie_plot(y, c, n, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def area_bar_chart(x, y1, y2, y3, l, kwargs, fname=None):
+def area_bar_chart(x, y1, y2, y3, l, kwargs, fname=None, title=None):
     fig, ax = initFigAxis()
 
     # Area plot
@@ -545,9 +545,13 @@ def area_bar_chart(x, y1, y2, y3, l, kwargs, fname=None):
     ax.set_ylabel(kwargs['ylabel'])
     ax.set_xlim(x[0], x[-1]+1)
     ax.set_ylim(kwargs['ylim'])
+    ax.set_xticks(kwargs['xticks'])
     ax.legend(loc='upper left')
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+    if title:
+        ax.set_title(title)
 
     if fname:
         myformat(ax)
