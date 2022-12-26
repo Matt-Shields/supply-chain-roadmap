@@ -121,7 +121,7 @@ def scenario_analysis(filepath_pipeline, filepath_ports, filepath_deploy, compon
     #
     # plot_cumulative(years, total_announced_jobs, total_scenario_jobs, components, color_list, ylabel='Direct manufacturing jobs, FTEs', fname='results/total_jobs', alternate_breakdown=job_breakdown)
     #
-    plot_num_facilities(components, announced, scenario, color_list, fname='results/num_facilities')
+    plot_num_facilities(components, announced, scenario, color_list, fname='results/num_facilities', title='A domestic offshore wind energy supply chain designed \nto meet the annual demand for major components in 2030 \nwould require at least 34 new manufacturing facilities')
 
     # Construction Gantt charts
     fname_gantt2 = 'results/' + plot_dir + '/overall_gantt'

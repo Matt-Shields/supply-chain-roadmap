@@ -272,7 +272,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
             ax.plot(x, yPlot, 'w')
             ax.fill_between(x, list(yBase), list(yPlot), color=color_list[c], label=c)
             yBase = yPlot
-
+    partial_inv = pd.DataFrame({'Year': x, 'Investment': yBase})
     # Add ports
     yPorts = yBase + y3
     ax.fill_between(x, list(yBase), list(yPorts), color=color_list['Ports'], alpha=0.5, label='Ports')
@@ -283,6 +283,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     ax.plot(x, yVessels, 'k')
 
     total_inv = pd.DataFrame({'Year': x, 'Investment': yVessels})
+    print('Manufacturing supply chain investment (no ports/vessels) is: ', partial_inv)
     print('Cumulative supply chain investment is: ', total_inv)
 
     if ymax is not None:
@@ -291,7 +292,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
     ax.set_xlim([2020,2030])
     # ax.set_xticklabels(components, rotation=90)
 
-    ax.set_xlabel('Manufacturing date')
+    # ax.set_xlabel('Date')
     ax.set_ylabel(ylabel)
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
@@ -331,7 +332,7 @@ def plot_cumulative(x, y1, y2, y3, y4, components, color_list, ylabel, fname=Non
 
 
 
-def plot_num_facilities(components, y1, y2, color_list, fname=None):
+def plot_num_facilities(components, y1, y2, color_list, fname=None, title=None):
     """Plot the total number of required facilities per component"""
 
     announced = {}
@@ -363,6 +364,10 @@ def plot_num_facilities(components, y1, y2, color_list, fname=None):
     ax.set_ylabel('Number of facilities')
 
     ax.legend(loc='upper right')
+
+    if title:
+        ax.set_title(title, pad=20)
+
 
     if fname is not None:
         myformat(ax)
